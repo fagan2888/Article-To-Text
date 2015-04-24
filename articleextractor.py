@@ -18,10 +18,16 @@ import helpers
 
 def download_webpage(url): 
 	print "Downloading webpage source for", url, "...", 
-	page = urllib2.urlopen(url)
-	pagedata = page.read()
+		
+	#make an url opener that can handle cookies
+	opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+	
+	#read in the site
+	response = opener.open(url)
+	html = response.read()
+	
 	print "done"
-	return pagedata
+	return html
 	
 	
 def page_pre_processer (pagedata):
@@ -37,7 +43,7 @@ def tokenizer (pagedata):
 		js.extract()
 	# More clensing Javascript from page # 
 	
-	token_list = soup.find_all(['div','article'])
+	token_list = soup.find_all(['div','article','nav'])
 	return token_list
 
 
@@ -56,7 +62,7 @@ def local_classifiers (token_list):
 		plain_text = token.get_text()
 		sentence_num = (len(re.split(r'[.!?]+', plain_text)) ) 
 		links = len(token.find_all('a')) + 1 
-		ratio = sentence_num / float(links)
+		ratio = (len(pars)/10) * (sentence_num / float(links))
 		token_l.append(ratio)
 		
 		#Ratio of text to html 
@@ -70,10 +76,10 @@ def local_classifiers (token_list):
 		token_l.append(commas)
 		
 		#Ratio of text to tags 
-		text = len(token.get_text())
-		tags = len(token.find_all()) + 1 
-		ratio = text / float(tags)
-		token_l.append(ratio)
+		text = len(re.split(r'[\w]+', plain_text))
+		tags = len(token.find_all()) 
+		s = text + (tags * -3.25)
+		token_l.append(s)
 		
 		output.append(token_l)
 		i = i + 1 
@@ -113,7 +119,7 @@ if __name__ == '__main__':
 	token_list = tokenizer (processed_webpage) 
 	score_list = local_classifiers(token_list)
 	
-	score_list.sort(key=lambda x: x[2],reverse=True)
+	score_list.sort(key=lambda x: (x[2],x[3]),reverse=True)
 	print tabulate(score_list,headers=["Token", "Pars", "S-to-L","Text Density","W-to-C","T-to-Tag"])
 
 	score_list_max = global_optimizer(score_list)
