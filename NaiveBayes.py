@@ -1,12 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# CS51 Final Project 2015 
+# Nathaniel Burbank 
+#   
 
 import re
 import math 
 
-debug = False
+debug = True
 
-def empty_Bayes_Ds ():
+def empty_b_dic ():
 	return dict()
 
 def unique (token_list):
@@ -25,130 +28,131 @@ def tokenize (text):
 	textl4 = unique(textl3)
 	return textl4
 
-def inc_token(token,label,bayes_ds):
-	assert label in bayes_ds.keys() 
+def inc_token(token,label,b_dic):
+	assert label in b_dic.keys() 
 	
-	token_dic = bayes_ds[label]["Token_counts"]
+	token_dic = b_dic[label]["Token_counts"]
 	if token in token_dic.keys():
 		token_dic[token] += 1 
 	else:
 		token_dic [token] = 1
 
-	return bayes_ds
+	return b_dic
 
-def inc_Doc_Count(label,bayes_ds):
-	assert label in bayes_ds.keys() 
+def inc_Doc_Count(label,b_dic):
+	assert label in b_dic.keys() 
 
-	if bayes_ds[label]["Doc_count"] > 0:
-		bayes_ds[label]["Doc_count"] += 1 
+	if b_dic[label]["Doc_count"] > 0:
+		b_dic[label]["Doc_count"] += 1 
 	else:
-		bayes_ds[label]["Doc_count"] = 1 
+		b_dic[label]["Doc_count"] = 1 
 
-	return bayes_ds
+	return b_dic
 
-def total_doc_count(bayes_ds):
+def total_doc_count(b_dic):
 	#Total number of docs that have been saved
 	total = 0 
-	for key in bayes_ds.keys():
-		total += bayes_ds[key]["Doc_count"]
+	for key in b_dic.keys():
+		total += b_dic[key]["Doc_count"]
 	return total 
 
-def doc_count_for_label(label, bayes_ds):
-	return bayes_ds[label]["Doc_count"]
+def doc_count_for_label(label, b_dic):
+	return b_dic[label]["Doc_count"]
 
-def inverse_Doc_Count (label,bayes_ds): 
+def inverse_Doc_Count (label,b_dic): 
 	#Total number of docs that have been saved, except for the given label 
-	total_docs = total_doc_count(bayes_ds)
-	return (total_docs - doc_count_for_label(label, bayes_ds))
+	total_docs = total_doc_count(b_dic)
+	return (total_docs - doc_count_for_label(label, b_dic))
 
-def register_Label (label, bayes_ds):
-	if label not in bayes_ds.keys():
+def register_Label (label, b_dic):
+	if label not in b_dic.keys():
 		label_dic = {"Doc_count": 0, "Token_counts":{} } 
-		bayes_ds[label] = label_dic 
+		b_dic[label] = label_dic 
 
-	return bayes_ds
+	return b_dic
 
+def labels (b_dic):
+	#returns a list of the current label names in the b_dic data structure
+	return b_dic.keys()
 
-def labels (bayes_ds):
-	#returns a list of the current label names in the bayes_ds data structure
-	return bayes_ds.keys()
-
-	
-def token_Label_Count(token, label, bayes_ds):
+def token_Label_Count(token, label, b_dic):
 	# Returns how many times the given token occurs for the given label 
-	token_dic = bayes_ds[label]["Token_counts"]
+	token_dic = b_dic[label]["Token_counts"]
 	count = 0 
 	if token in token_dic.keys():
 		count = token_dic[token]
 	return count 
 	
-def token_Inverse_Label_Count (token, l, bayes_ds):
+def token_Inverse_Label_Count (token, l, b_dic):
 	#Returns how many times the given token occurs for lables other than the given label 
 	count = 0
-	for label in labels(bayes_ds):
+	for label in labels(b_dic):
 		if (label != l): 
-			count += token_Label_Count(token,label,bayes_ds) 
+			count += token_Label_Count(token,label,b_dic) 
 	return count
 
-def total_token_count (token, bayes_ds):
+def total_token_count (token, b_dic):
 	#Returns the number of times we've seen the given token in any document during training 
 	count = 0
-	for label in labels(bayes_ds):
-		count += token_Label_Count(token, label, bayes_ds) 
+	for label in labels(b_dic):
+		count += token_Label_Count(token, label, b_dic) 
 
 	return count
 
-def train_With_list(lst,bayes_ds):
+
+#Main functions 
+
+def train_With_list(lst,b_dic):
 	for item in lst:
 		text, label = item 
-		bayes_ds = train(text,label,bayes_ds)
+		b_dic = train(text,label,b_dic)
 
-	return bayes_ds
+	return b_dic
 
-def train (text, label, bayes_ds):
-	if label not in labels(bayes_ds):
-		bayes_ds = register_Label(label,bayes_ds)
+def train (text, label, b_dic):
+	if label not in labels(b_dic):
+		b_dic = register_Label(label,b_dic)
 	
 	tokens = tokenize(text)
 	
 	for token in tokens:
-		bayes_ds = inc_token(token,label,bayes_ds)
+		b_dic = inc_token(token,label,b_dic)
 		
-	bayes_ds = inc_Doc_Count(label, bayes_ds)
+	b_dic = inc_Doc_Count(label, b_dic)
 
-	return bayes_ds
+	return b_dic
 
 	
-def guess(text, bayes_ds):
+def guess(text, b_dic):
 
-	assert (total_doc_count(bayes_ds)) > 0 
+	assert (total_doc_count(b_dic)) > 0 
 
 	tokens = tokenize(text)
 	
 	scores = {}
 	labelProbability = {}
 			
-	for label in labels(bayes_ds):
+	for label in labels(b_dic):
 		
 		logSum = 0.00 
-		labelProbability[label] = doc_count_for_label(label, bayes_ds) / float(total_doc_count(bayes_ds))
+		labelProbability[label] = doc_count_for_label(label, b_dic) / float(total_doc_count(b_dic))
 	
 		for token in tokens: 
 
 			tokenicity = 0.01
-			total_Tokins = total_token_count(token,bayes_ds)
+			total_Tokins = total_token_count(token,b_dic)
 			
 			if (total_Tokins == 0):
 				if (debug): print "Skipping " + token 
 				continue
 			else:
 				if (debug): print "Starting " + token 
-				tokenProbability = token_Label_Count(token, label, bayes_ds) /  float(doc_count_for_label(label, bayes_ds))
-				tokenInverseProbability = token_Inverse_Label_Count(token, label, bayes_ds) / float(inverse_Doc_Count(label, bayes_ds))
-
-				if (debug): print "inverse_Doc_Count " + str(float(inverse_Doc_Count(label, bayes_ds)))
-				if (debug): print "tokenProbability " + str(tokenProbability)
-				if (debug): print "tokenInverseProbability " + str(tokenInverseProbability)
+				
+				tokenProbability = token_Label_Count(token, label, b_dic) /  float(doc_count_for_label(label, b_dic))
+				if (debug): print str(token_Label_Count(token, label, b_dic)) + "/" + str(doc_count_for_label(label, b_dic)) + " = " + str(tokenProbability) 
+				
+				tokenInverseProbability = token_Inverse_Label_Count(token, label, b_dic) / float(inverse_Doc_Count(label, b_dic))
+				if (debug): print str(token_Inverse_Label_Count(token, label, b_dic)) + "/" + str(inverse_Doc_Count(label, b_dic)) + " = " + str(tokenInverseProbability)
 
 				tokenicity = tokenProbability / float(tokenProbability + tokenInverseProbability)
 				tokenicity = ( (1 * 0.5) + (total_Tokins * tokenicity) ) / ( 1 + total_Tokins )
