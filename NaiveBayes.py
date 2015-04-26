@@ -7,10 +7,7 @@
 import re
 import math 
 
-debug = True
-
-def empty_b_dic ():
-	return dict()
+debug = True 
 
 def unique (token_list):
 	unique_tokens = []
@@ -20,13 +17,16 @@ def unique (token_list):
 	
 	return unique_tokens 
 
-def tokenize (text):
+def default_tokenize (text):
 	textl = text.lower()
 	textl1 = re.sub(r"\W. "," ",textl) 
 	textl2 = re.sub(r"s+, "," ",textl1) 
 	textl3 = re.split(' ', textl2.strip())
 	textl4 = unique(textl3)
 	return textl4
+
+def empty_bayes ():
+	return {"tokenize":default_tokenize, "b_dic": dict()} 
 
 def inc_token(token,label,b_dic):
 	assert label in b_dic.keys() 
@@ -102,14 +102,18 @@ def total_token_count (token, b_dic):
 
 #Main functions 
 
-def train_With_list(lst,b_dic):
+def train_With_list(lst,bayes):
 	for item in lst:
 		text, label = item 
-		b_dic = train(text,label,b_dic)
+		b_dic = train(text,label,bayes)
 
 	return b_dic
 
-def train (text, label, b_dic):
+def train (text, label, bayes):
+
+	tokenize = bayes["tokenize"]
+	b_dic = bayes["b_dic"]
+
 	if label not in labels(b_dic):
 		b_dic = register_Label(label,b_dic)
 	
@@ -120,12 +124,16 @@ def train (text, label, b_dic):
 		
 	b_dic = inc_Doc_Count(label, b_dic)
 
-	return b_dic
+	return bayes
 
 	
-def guess(text, b_dic):
+def guess(text, bayes):
+
+	tokenize = bayes["tokenize"]
+	b_dic = bayes["b_dic"]
 
 	assert (total_doc_count(b_dic)) > 0 
+
 
 	tokens = tokenize(text)
 	
@@ -145,16 +153,22 @@ def guess(text, b_dic):
 			if (total_Tokins == 0):
 				if (debug): print "Skipping " + token 
 				continue
+				# If we've never seen this token before, we just skip it 
 			else:
 				if (debug): print "Starting " + token 
 				
-				tokenProbability = token_Label_Count(token, label, b_dic) /  float(doc_count_for_label(label, b_dic))
-				if (debug): print str(token_Label_Count(token, label, b_dic)) + "/" + str(doc_count_for_label(label, b_dic)) + " = " + str(tokenProbability) 
-				
-				tokenInverseProbability = token_Inverse_Label_Count(token, label, b_dic) / float(inverse_Doc_Count(label, b_dic))
-				if (debug): print str(token_Inverse_Label_Count(token, label, b_dic)) + "/" + str(inverse_Doc_Count(label, b_dic)) + " = " + str(tokenInverseProbability)
+				tokenProbability = (token_Label_Count(token, label, b_dic) /  float(doc_count_for_label(label, b_dic))) * labelProbability[label]
+				if (debug): print "Probability:" + str(token_Label_Count(token, label, b_dic)) + "/" + str(doc_count_for_label(label, b_dic)) + " * " + str(labelProbability[label]) + " = " + str(tokenProbability) 
+				# What's the probility that a given token appears in documents of this label? 
+
+				tokenInverseProbability = (token_Inverse_Label_Count(token, label, b_dic) / float(inverse_Doc_Count(label, b_dic))) * (1 - labelProbability[label])
+				if (debug): print "InverseProbability:" + str(token_Inverse_Label_Count(token, label, b_dic)) + "/" + str(inverse_Doc_Count(label, b_dic)) +  " * " + str((1 - labelProbability[label])) + " = " + str(tokenInverseProbability)
+				# The probability that the token shows up in any *other* category than the one we're considering.
 
 				tokenicity = tokenProbability / float(tokenProbability + tokenInverseProbability)
+				if (debug): print "tokenicity: " + str(tokenProbability) + "/(" + str(tokenProbability) + "+" +  str(tokenInverseProbability) + ") = " + str(tokenicity)
+				#  Given the token is present, tokenicity is probability that the document is in the category we're considering. 
+
 				tokenicity = ( (1 * 0.5) + (total_Tokins * tokenicity) ) / ( 1 + total_Tokins )
 				
 				if (tokenicity == 0):

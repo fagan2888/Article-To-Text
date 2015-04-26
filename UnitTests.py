@@ -42,7 +42,7 @@ def language_bayes_tests():
 
 	training_statments.append(("David Hallberg, the statuesque ballet star who is a principal dancer at both the storied Bolshoi Ballet of Moscow and American Ballet Theater in New York, is theoretically the type of front-row coup that warrants a fit of camera flashes. But when Mr. Hallberg, 30, showed up at New York Fashion Week last month, for a presentation by the Belgian designer Tim Coppens, he glided into the front row nearly unnoticed, save for a quick chat with Tumblr’s fashion evangelist, Valentine Uhovski, and a warm embrace from David Farber, the executive style editor at WSJ.", 'english'))
 	
-	bayes_ds = NaiveBayes.train_With_list(training_statments,{})
+	bayes_ds = NaiveBayes.train_With_list(training_statments,NaiveBayes.empty_bayes())
 	
 
 	#Guess tests 
@@ -52,13 +52,22 @@ def language_bayes_tests():
 
 	scores_french = NaiveBayes.guess("Le suspect, Sid Ahmed Ghlam, faisait l’objet d’une fiche «S», pour «sûreté de l’Etat» et présentait donc une menace potentielle. A son retour de Turquie, au début de l’année, il avait été placé en garde à vue et entendu par la direction générale de la sécurité intérieure (DGSI). Mais aucun élément n’a permis d’ouvrir une enquête et de le placer en détention.", bayes_ds)
 	
-#	print scores_english
-#	print scores_spanish
-#	print scores_french
+	print "english"
+	print scores_english
+	
+	print "spanish"
+	print scores_spanish
+	
+	print "french"
+	print scores_french
 
-	assert (scores_english == {'english': 0.9999868755999725, 'french': 2.2671631631792316e-07, 'spanish': 1.0118716833375908e-07})
-	assert (scores_spanish == {'english': 3.605633183988699e-10, 'french': 1.9780177734745066e-07, 'spanish': 0.9999999816556634})
-	assert (scores_french == {'english': 6.645650796884271e-13, 'french': 0.9999999997244751, 'spanish': 4.549573302497248e-09}) 
+	#assert (scores_english == {'english': 0.9999868755999725, 'french': 2.2671631631792316e-07, 'spanish': 1.0118716833375908e-07})
+	#assert (scores_spanish == {'english': 3.605633183988699e-10, 'french': 1.9780177734745066e-07, 'spanish': 0.9999999816556634})
+	#assert (scores_french == {'english': 6.645650796884271e-13, 'french': 0.9999999997244751, 'spanish': 4.549573302497248e-09}) 
+	
+	assert (scores_english == {'spanish': 1.0118716833375908e-07, 'french': 8.112674008744806e-08, 'english': 0.9999642243846595})
+	assert (scores_spanish == {'spanish': 0.9999999405070561, 'french': 5.9492944017853844e-08, 'english': 3.605633183988699e-10})
+	assert (scores_french == {'spanish': 7.503546592566475e-10, 'french': 0.9999999973396516, 'english': 3.917231114880063e-13}) 
 
 print "Complete"
 

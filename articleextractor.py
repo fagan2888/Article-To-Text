@@ -40,11 +40,13 @@ def page_pre_processer (pagedata):
 	processed = re.sub(r"<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>","",pagedata, re.M )
 	# Removes Javascript from page # 
 	
-	token_list = PreProcessor.tokenizer (processed) 
-	score_list = PreProcessor.classifier(token_list)
+	soup = BeautifulSoup(pagedata)
+	token_list = PreProcessor.tokenizer (soup) 
+	score_list = PreProcessor.classifier(token_list, soup)
 	
-	score_list.sort(key=lambda x: (x[2],x[3]),reverse=True)
-	if (debug): print tabulate(score_list,headers=["Token", "Pars", "S-to-L","Text Density","W-to-C","T-to-Tag"])
+	score_list.sort(key=lambda x: (x[8],x[4]),reverse=True)
+	score_list[0][9] = 1 
+	if (debug): print tabulate(score_list,headers=["Token","Sens", "Ps", "Divs", "S-to-L","TextDensity","W-to-C","T-to-Tag","Score","Article"])
 
 	score_list_max = score_list[0][0]
 	article_processed = token_list[score_list_max]
@@ -66,6 +68,11 @@ def token_selector (score_list_max, div_list):
 def article_post_processer(div):
 	# Still todo
 	return html2text.html2text(div.prettify())
+	# l = (div.find_all())
+	# l2 = []
+	# for tag in l:
+	# 	l2.append(tag.contents)
+	# return l2 
 	
 
 def training (urllist):
@@ -77,6 +84,7 @@ if __name__ == '__main__':
 
 	raw_html = download_webpage(sys.argv[1]) 
 	processed_webpage = page_pre_processer(raw_html)
+
 	print article_post_processer(processed_webpage)
 		
 	
