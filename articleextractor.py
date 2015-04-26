@@ -44,9 +44,8 @@ def page_pre_processer (pagedata):
 	token_list = PreProcessor.tokenizer (soup) 
 	score_list = PreProcessor.classifier(token_list, soup)
 	
-	score_list.sort(key=lambda x: (x[8],x[4]),reverse=True)
-	score_list[0][9] = 1 
-	if (debug): print tabulate(score_list,headers=["Token","Sens", "Ps", "Divs", "S-to-L","TextDensity","W-to-C","T-to-Tag","Score","Article"])
+	score_list.sort(key=lambda x: (x[5],x[1]),reverse=True)
+	if (debug): print tabulate(score_list,headers=["Token ID","Sens", "Ps", "S-to-L","TextDensity","Overall Score"])
 
 	score_list_max = score_list[0][0]
 	article_processed = token_list[score_list_max]
