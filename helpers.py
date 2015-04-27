@@ -1,16 +1,33 @@
 #!/usr/bin/python
 
+import codecs
+import pickle
+import sys 
+
+debug = True
+
 ### Basic file functions ### 
 def write_file_utf(data, filename):
-	print "Writing data to", filename, "...",   
+	if (debug):  print "Writing data to", filename, "...",   
 	writefile = codecs.open(filename, 'w', 'utf-8')
 	writefile.write(data)
 	writefile.close()
-	print ".",
-	print "done" 
+	if (debug): print ".",
+	if (debug): print "done" 
+
+
+def read_file_utf(filename):
+	if (debug):  print "Reading data from", filename, "...",   
+	readfile = codecs.open(filename, 'r', 'utf-8')
+	data = readfile.read()
+	readfile.close()
+	if (debug):  print ".",
+	if (debug): print "done" 
+	return data
+
 
 def append_file_utf(data, filename):
-	print "appending data to", filename, "...",
+	if (debug):  print "appending data to", filename, "...",
 	try: 
 		writefile = codecs.open(filename, 'a', 'utf-8')
 		writefile.write(data)

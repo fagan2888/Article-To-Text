@@ -4,7 +4,7 @@
 #   
 
 ### External Librarys 
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup, NavigableString
 import urllib2
 import html2text
 import re
@@ -52,6 +52,78 @@ def page_pre_processer (pagedata):
 	
 	return article_processed
 
+def Tokenizer (article_div):
+
+	def unique (token_list):
+		unique_tokens = []
+		for token in token_list:
+			if token not in unique_tokens:
+				unique_tokens.append(token)
+	
+		return unique_tokens 
+
+	def default_tokenize (text):
+		textl = text.lower()
+		textl1 = re.sub(r"\W. "," ",textl) 
+		textl2 = re.sub(r"s+, "," ",textl1) 
+		textl3 = re.split(' ', textl2.strip())
+		textl4 = unique(textl3)
+		return textl4
+
+	# Remove tags that contain no content 
+	empty_tags = article_div.findAll(lambda tag: tag.is_empty_element or not tag.contents and (tag.string is None or not tag.string.strip()))
+	[empty_tag.extract() for empty_tag in empty_tags]
+
+	# Remove empty navigable strings 
+	for child in article_div.children:
+		if isinstance(child, NavigableString):
+			if (len(child.string) <= 1): child.extract() 
+
+
+	# Remove attibutes from html tags 
+	for tag in article_div():
+		tag.attrs = None
+
+	i = 0 
+	tokeninzed = {}
+
+	for child in article_div.children:
+		child_tokeninzed = []
+		if not isinstance(child, NavigableString):
+			#print child.prettify()
+			#print "**output***"
+			parrent_tag = "<" + str(child.name) + ">"
+			child_tokeninzed.append(parrent_tag)
+			for tag in child.find_all(True):
+				tag = "<" + str(tag.name) + ">"
+				child_tokeninzed.append(parrent_tag) 
+
+
+			content = child.get_text().strip().lower()
+			child_tokeninzed += default_tokenize(content)
+
+			#for string in child.stripped_strings:
+			#	text = text + " " + string.lower() 
+
+			
+		else: # is NavigableString 
+			string = default_tokenize(child.string)
+			child_tokeninzed = ["<NS>"] + string
+
+		tokeninzed[i] = (child_tokeninzed)	
+		i += 1
+
+
+
+	#print tokeninzed
+
+	for key in tokeninzed.keys():
+		print key 
+
+	print tokeninzed
+	return tokeninzed
+
+
 def bayes_processer (pagedata):
 	#Still need to implement! 
 	return pagedate
@@ -66,7 +138,10 @@ def token_selector (score_list_max, div_list):
 	
 def article_post_processer(div):
 	# Still todo
-	return html2text.html2text(div.prettify())
+	# return html2text.html2text(div.prettify())
+
+	return div
+
 	# l = (div.find_all())
 	# l2 = []
 	# for tag in l:
@@ -81,10 +156,23 @@ def training (urllist):
 
 if __name__ == '__main__':
 
-	raw_html = download_webpage(sys.argv[1]) 
-	processed_webpage = page_pre_processer(raw_html)
+	#raw_html = download_webpage(sys.argv[1]) 
+	raw_html = helpers.read_file_utf(sys.argv[1])
+	article_div = page_pre_processer(raw_html)
+	Tokenizer(article_div)
 
-	print article_post_processer(processed_webpage)
+
+	
+
+
+
+	# VALID_TAGS = ['strong', 'em', 'p', 'ul', 'li', 'br', 'b', 'a', 'i']
+
+	# for tag in new_soup.findAll(True):
+	# 	if tag.name not in VALID_TAGS:
+	# 		tag.hidden = True
+
+	#print new_soup.prettify()
 		
 	
 		

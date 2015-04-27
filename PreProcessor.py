@@ -24,19 +24,19 @@ def classifier (token_list, soup):
 	i = 0 
 	output = [] 
 
+	# Generate states for the whole page 
+
+	# Total number of sentences
 	page_text = soup.get_text()
 	page_num_of_sens = (len(re.split(r'[.!?]+', page_text))) + 1 
 
 	#Number of paragraph tags 
 	page_num_of_pars = len(soup.find_all('p')) + 1 
 
-	#Number of div elements
-	page_num_of_divs = len(token_list)
-
 	
 	for token in token_list:
 
-		# Number of sentences 
+		# Number of sentences within given token 
 		plain_text = token.get_text()
 		sentence_num = (len(re.split(r'[.!?]+', plain_text)) ) 
 
@@ -53,7 +53,7 @@ def classifier (token_list, soup):
 			pars = len(token.find_all('p', recursive=False))/float(page_num_of_pars)
 			token_stats.append(pars)
 
-			# Becuase you the paragraph tag count in the following two stats, we want a floor 
+			# Becuase the paragraph is a factor in  the following two statistics, this puts in a floor 
 			pars_a = max(.1,pars)
 
 			#Ratio of sentences to link tags, weighted by paragraph tags 
@@ -65,11 +65,10 @@ def classifier (token_list, soup):
 			text_density= (len(plain_text)/float(len(token.prettify()))) * pars_a
 			token_stats.append(text_density)
 
-			#Weighted score metric, based on a regression analysis of small set of sample data  
+			#Weighted score metric, based on a regression analysis of small set of sample data. 
 			score = -.0079908 + (.0225799 * sentence_num_adjusted) + (1.319708  * pars) + ( -.0017439  *  StoLP) + (.45502 * text_density)
 			token_stats.append(score)
 			
-		
 
 			output.append(token_stats)
 
