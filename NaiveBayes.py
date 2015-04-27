@@ -7,7 +7,7 @@
 import re
 import math 
 
-debug = True 
+debug = False 
 
 def unique (token_list):
 	unique_tokens = []
@@ -102,40 +102,31 @@ def total_token_count (token, b_dic):
 
 #Main functions 
 
-def train_With_list(lst,bayes):
+def train_With_list(lst,tokenize_f,b_dic):
 	for item in lst:
 		text, label = item 
-		b_dic = train(text,label,bayes)
+		tokens = tokenize_f(text)
+		b_dic = train(tokens,label,b_dic)
 
 	return b_dic
 
-def train (text, label, bayes):
-
-	tokenize = bayes["tokenize"]
-	b_dic = bayes["b_dic"]
+def train (tokens, label, b_dic):
 
 	if label not in labels(b_dic):
 		b_dic = register_Label(label,b_dic)
-	
-	tokens = tokenize(text)
 	
 	for token in tokens:
 		b_dic = inc_token(token,label,b_dic)
 		
 	b_dic = inc_Doc_Count(label, b_dic)
 
-	return bayes
+	return b_dic
 
 	
-def guess(text, bayes):
+def guess(tokens, b_dic):
 
-	tokenize = bayes["tokenize"]
-	b_dic = bayes["b_dic"]
 
 	assert (total_doc_count(b_dic)) > 0 
-
-
-	tokens = tokenize(text)
 	
 	scores = {}
 	labelProbability = {}
@@ -153,7 +144,7 @@ def guess(text, bayes):
 			if (total_Tokins == 0):
 				if (debug): print "Skipping " + token 
 				continue
-				# If we've never seen this token before, we just skip it 
+				# If the token is not assocated with any of the labels, skip it 
 			else:
 				if (debug): print "Starting " + token 
 				

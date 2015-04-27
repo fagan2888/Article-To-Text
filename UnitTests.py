@@ -1,7 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import re 
 import NaiveBayes
+
+def unique (token_list):
+	unique_tokens = []
+	for token in token_list:
+		if token not in unique_tokens:
+			unique_tokens.append(token)
+	
+	return unique_tokens 
+
+def default_tokenize (text):
+	textl = text.lower()
+	textl1 = re.sub(r"\W. "," ",textl) 
+	textl2 = re.sub(r"s+, "," ",textl1) 
+	textl3 = re.split(' ', textl2.strip())
+	textl4 = unique(textl3)
+	return textl4
+
 
 def language_bayes_tests():
 	
@@ -42,7 +60,7 @@ def language_bayes_tests():
 
 	training_statments.append(("David Hallberg, the statuesque ballet star who is a principal dancer at both the storied Bolshoi Ballet of Moscow and American Ballet Theater in New York, is theoretically the type of front-row coup that warrants a fit of camera flashes. But when Mr. Hallberg, 30, showed up at New York Fashion Week last month, for a presentation by the Belgian designer Tim Coppens, he glided into the front row nearly unnoticed, save for a quick chat with Tumblr’s fashion evangelist, Valentine Uhovski, and a warm embrace from David Farber, the executive style editor at WSJ.", 'english'))
 	
-	bayes_ds = NaiveBayes.train_With_list(training_statments,NaiveBayes.empty_bayes())
+	bayes_ds = NaiveBayes.train_With_list(training_statments, default_tokenize, {})
 	
 
 	#Guess tests 

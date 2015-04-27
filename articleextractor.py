@@ -52,7 +52,7 @@ def page_pre_processer (pagedata):
 	
 	return article_processed
 
-def Tokenizer (article_div):
+def tokenizer (article_div):
 
 	def unique (token_list):
 		unique_tokens = []
@@ -114,67 +114,124 @@ def Tokenizer (article_div):
 		i += 1
 
 
-
-	#print tokeninzed
-
-	for key in tokeninzed.keys():
-		print key 
-
-	print tokeninzed
 	return tokeninzed
 
 
-def bayes_processer (pagedata):
-	#Still need to implement! 
-	return pagedate
+def bayes_processer (tokenized_dic, b_dic):
+	scores = {}
+	for key in tokenized_dic.keys():
+		scores[key] = NaiveBayes.guess(tokenized_dic[key],b_dic)
+	return scores 
 
-def global_optimizer (score_list):
-	div_id = score_list[0][0]
-	if (debug): print div_id
-	return div_id
+
+def article_extractor (scores, article_div, headline):
+
+	i = 0 
+	for child in article_div:
+		guess = NaiveBayes.extract_Winner(scores[i]) 
+		print str(i) + " " + guess
+		print child 
+		if guess == "headline":
+			headline = child.get_text
+		elif guess != "article":
+			child.extract()
+		i += 1 
+
+	return article_div
 
 def token_selector (score_list_max, div_list):
 	return div_list[score_list_max]
 	
-def article_post_processer(div):
+def article_post_processer(article_div):
 	# Still todo
-	# return html2text.html2text(div.prettify())
+	
+	VALID_TAGS = ['strong', 'em', 'p', 'ul', 'li', 'br', 'b', 'a', 'i'] 
 
-	return div
+	for tag in article_div.findAll(True):
+		if tag.name not in VALID_TAGS:
+			tag.hidden = True
 
-	# l = (div.find_all())
-	# l2 = []
-	# for tag in l:
-	# 	l2.append(tag.contents)
-	# return l2 
+	return html2text.html2text(article_div.prettify()) 
 	
 
-def training (urllist):
-	# Still todo
-	return urllist 
+def training (article_div, tokeninzed_dic, b_dic):
+	i = 0 
+	for child in article_div.children:
+		if not isinstance(child, NavigableString):
+			b_dic = training_loop(child.prettify(),tokeninzed_dic[i], b_dic)
+		else:
+			b_dic = training_loop(child.string,tokeninzed_dic[i], b_dic)
+		i += 1 
+
+	print b_dic
+	return b_dic 
+
+
+
+
+def training_loop(article_sub, tokens, b_dic):
+
+	cmd = ""
+	print(chr(27) + "[2J")
+	print article_sub
+	print "###########################"
+	print tokens 
+
+
+	valid_categories = {'h': 'headline', 'a': 'article', 'd': 'dateline', 'b':'byline', 's':'skip', 'o':'spam'} 
+
+	while cmd != "s":
+
+		cmd = raw_input ("\n Enter h for headline, a for article, d for date, b for byline, o for anything else, s to skip:")
+
+		cmd = cmd.lower() 
+
+		if cmd == "s": break ##first check to see if q was entered
+		
+		elif cmd in valid_categories.keys():
+				b_dic = NaiveBayes.train(tokens,valid_categories[cmd], b_dic)
+				data = "\nb_dic = NaiveBayes.train(" + str(tokens) + ",'" + valid_categories[cmd] + "',b_dic)"
+				helpers.append_file_utf(data, "training.py")
+				break 
+		
+		else: print cmd, " is an invalid command. Please try again, or enter s to skip this section ."
+
+	return b_dic
+
+				 
+
 	
 
 if __name__ == '__main__':
 
+	headline = "This is a test"
 	#raw_html = download_webpage(sys.argv[1]) 
 	raw_html = helpers.read_file_utf(sys.argv[1])
 	article_div = page_pre_processer(raw_html)
-	Tokenizer(article_div)
+	tokenized_dic = tokenizer(article_div)
+
+	#b_dic = training (article_div, tokenized_dic, {}) 
+
+	#helpers.pickle_data(b_dic, 'bdic.data') 
+
+	b_dic = helpers.load_pickle('bdic.data') 
+
+	scores = bayes_processer(tokenized_dic, b_dic)
+
+	article_div = article_extractor (scores, article_div, headline)
+
+	print headline
+
+	print article_post_processer(article_div) 
+
+
 
 
 	
 
 
 
-	# VALID_TAGS = ['strong', 'em', 'p', 'ul', 'li', 'br', 'b', 'a', 'i']
-
-	# for tag in new_soup.findAll(True):
-	# 	if tag.name not in VALID_TAGS:
-	# 		tag.hidden = True
-
-	#print new_soup.prettify()
 		
 	
 		
-	
 	
