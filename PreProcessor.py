@@ -3,6 +3,9 @@
 from bs4 import BeautifulSoup 
 import re
 import codecs
+from tabulate import tabulate
+
+debug = False 
 
 
 def tokenizer (soup):
@@ -73,6 +76,9 @@ def classifier (token_list, soup):
 			output.append(token_stats)
 
 		i = i + 1 
+
+	output.sort(key=lambda x: (x[5],x[1]),reverse=True)
+	if (debug): print tabulate(score_list,headers=["Token ID","Sens", "Ps", "S-to-L","TextDensity","Overall Score"])
 	
 	return output
 			  
