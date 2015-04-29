@@ -25,8 +25,6 @@ def default_tokenize (text):
 	textl4 = unique(textl3)
 	return textl4
 
-def empty_bayes ():
-	return {"tokenize":default_tokenize, "b_dic": dict()} 
 
 def inc_token(token,label,b_dic):
 	assert label in b_dic.keys() 
@@ -99,6 +97,13 @@ def total_token_count (token, b_dic):
 
 	return count
 
+def can_make_guesses(b_dic):
+	has_docs = total_doc_count(b_dic) > 10
+	has_labels = len(labels(b_dic)) >= 2 
+
+	if has_docs and has_labels: return True 
+	else: return False 
+
 
 #Main functions 
 
@@ -124,7 +129,6 @@ def train (tokens, label, b_dic):
 
 	
 def guess(tokens, b_dic):
-
 
 	assert (total_doc_count(b_dic)) > 0 
 	

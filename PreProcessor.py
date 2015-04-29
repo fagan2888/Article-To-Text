@@ -16,18 +16,14 @@ def tokenizer (soup):
 	
 	token_list = soup.find_all(['div','article','nav'])
 
-	#for token in token_statsist:
-	#	for elem in soup.findAll(['div','article','nav']):
-	#		elem.extract()
-
 	return token_list	
 
-def classifier (token_list, soup):
+def div_selector (token_list, soup):
 	
 	i = 0 
 	output = [] 
 
-	# Generate states for the whole page 
+	# Generate stats for the whole page 
 
 	# Total number of sentences
 	page_text = soup.get_text()

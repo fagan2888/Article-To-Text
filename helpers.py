@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import urlparse
 import codecs
 import pickle
 import sys 
@@ -14,6 +15,14 @@ def write_file_utf(data, filename):
 	writefile.close()
 	if (debug): print ".",
 	if (debug): print "done" 
+
+
+def is_url(string): 
+	parts = urlparse.urlsplit(string)  
+	if not parts.scheme or not parts.netloc:  
+		return False 
+	else: 
+		return True 
 
 
 def read_file_utf(filename):
@@ -54,27 +63,5 @@ def load_pickle(filename):
 	print "done" 
 	return data
 
-def save_article_links_dict(article_links_redirects_dict, year):
-    article_data_filename = './studyhacks_article_links_redirects_dict_' + year + '.data'
-    try:
-        pickle_data(article_links_redirects_dict, article_data_filename)
-    except:
-        print "Unexpected error:", sys.exc_info()[0]
-        raise 
+	
 
-def load_article_links_dict(year):
-    article_data_filename = './studyhacks_article_links_redirects_dict_' + year + '.data'
-    try:
-        print "Loading article data from", article_data_filename, "..."
-        article_links_redirects_dict = load_pickle(article_data_filename)
-        print "Done" 
-    except IOError:
-        article_links_redirects_dict = {}
-    except:
-        print "Unexpected error:", sys.exc_info()[0]
-        raise 
-    
-    return article_links_redirects_dict
-    
-
-    
