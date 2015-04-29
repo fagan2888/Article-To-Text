@@ -5,7 +5,7 @@ import codecs
 import pickle
 import sys 
 
-debug = True
+debug = False
 
 ### Basic file functions ### 
 def write_file_utf(data, filename):

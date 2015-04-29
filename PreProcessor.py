@@ -9,13 +9,7 @@ debug = False
 
 
 def tokenizer (soup):
-
-	for elem in soup.findAll(['script','style']):
-		elem.extract()
-	# More clensing Javascript from page # 
-	
 	token_list = soup.find_all(['div','article','nav'])
-
 	return token_list	
 
 def div_selector (token_list, soup):
