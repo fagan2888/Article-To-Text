@@ -5,7 +5,7 @@ import re
 import codecs
 from tabulate import tabulate
 
-debug = False 
+debug = False
 
 
 def tokenizer (soup):
@@ -59,7 +59,7 @@ def div_selector (token_list, soup):
 			token_stats.append(text_density)
 
 			#Weighted score metric, based on a regression analysis of small set of sample data. 
-			score = -.0079908 + (.0225799 * sentence_num_adjusted) + (1.319708  * pars) + ( -.0017439  *  StoLP) + (.45502 * text_density)
+			score = -.0079908 + (.0225799 * sentence_num_adjusted) + (1.319708  * pars) + ( -.0017439  *  StoLP) + (.55502 * text_density)
 			token_stats.append(score)
 			
 
@@ -68,7 +68,7 @@ def div_selector (token_list, soup):
 		i = i + 1 
 
 	output.sort(key=lambda x: (x[5],x[1]),reverse=True)
-	if (debug): print tabulate(score_list,headers=["Token ID","Sens", "Ps", "S-to-L","TextDensity","Overall Score"])
+	if (debug): print tabulate(output,headers=["Token ID","Sens", "Ps", "S-to-L","TextDensity","Overall Score"])
 	
 	return output
 			  

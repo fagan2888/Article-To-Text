@@ -45,7 +45,7 @@ def stem(word):
 def tokenize_string (text):
 	"""
 	Very rudimentary tokenizer. Converts a sentence such as this:
-	"Hey!! You can't use those. \n Those are Jack's  bowling balls!" 
+	Hey!! You can't use those. Those are Jack's  bowling balls! 
 	Into a list of unique, stemmed words like this: 
 	['hey', '!', 'you', "can't", 'use', 'those', '.', 'are', 'jack', 'bowl', 'balls']
 
@@ -96,6 +96,23 @@ def soupify (raw_html):
 
 	return soup 
 
+def make_article_dic(soup, url):
+
+	article_dic = {}
+	
+	try:
+		article_dic[headline] = soup.title.string
+	except:
+		article_dic[headline] = Helpers.get_title_from_url(url)
+
+	try:
+		article_dic[date] = soup.date.string
+	except:
+		print "could not find date"
+		
+	return article_dic 
+
+
 
 def page_pre_processer (soup):
 
@@ -120,7 +137,11 @@ def article_div_pre_processer (article_div):
 			if isinstance(child, NavigableString):
 				if (len(child.string.strip()) <= 1):
 					child.extract()
-	# This is a bit of a hack. I'm not sure why I need to do mutuple iterations over the list to find them all. May be a bug in butiful soup. 
+	
+	# The x in range loop bit of this is a hack. I'm not sure why I need to do multiple
+	# iterations over the list of children to find all of the empty navigable
+	# strings, but if I don't, some are left behind and it causes problems
+	# further below.  Might be a bug in BeautifulSoup.
 
 	return article_div 
 
@@ -203,20 +224,22 @@ def article_post_processer(article_div):
 
 def print_div (article_div):
 
-	print "Total Elms"
-	print len(article_div)
+	t = len(article_div)
 	i = 1 
 			
-	for child in clean_article_div.contents:
+	for child in article_div.contents:
 		if isinstance(child, NavigableString):
 			print "####"
-			print i 
+			print "%d of %d" % (i,t) 
+			print len(child.string)
 			print child.string
 		else:
 			print "####"
-			print i 
-			print child.get_text
+			print "%d of %d" % (i,t) 
+			print child
 		i += 1 
+
+
 
 def rebuild_training_dic (): 
 	
@@ -227,8 +250,10 @@ def rebuild_training_dic ():
 	i = 0 
 	for line in training_data.split("\n"):
 		if line[0] not in ["#"]: 
-			lst = line.split("\t")
+			lst = line.split(",")
 			filename = training_dir + lst.pop(0) #Both returns first elm and deletes it 
+
+			print "starting " + filename 
 			list_len = int(lst.pop(0)) 
 			raw_html = Helpers.read_file_utf(filename) 
 			soup = BeautifulSoup(raw_html)
@@ -247,6 +272,8 @@ def rebuild_training_dic ():
 			print "Number of classifcations " + str(len(lst)) 
 			print "Number of keys " + str(len(token_dic.keys()))  
 			
+			if filename == "trainingdata/story.html": print_div(clean_article_div)
+
 			assert len(lst) == list_len
 			assert len(clean_article_div) == len(lst) 
 
@@ -267,36 +294,17 @@ def train_on_article (url, soup, clean_article_div, token_dic, b_dic):
 	# Save artcle html to training dir 
 	#html = soup.renderContents()  
 	html = unicode(soup)
-	filename = url.strip().split('/')[-1]
+	filename = Helpers.filename_from_url(url) 
 
-	if filename == "": filename = url.strip().split('/')[-2]
-
-	if not (filename.endswith('html') or filename.endswith('htm')): 
-		filename += ".html"
-	
 	Helpers.write_file_utf(html, training_dir + filename)
 
+	print_div(clean_article_div)
 
 	# Make new line in training file 
 	t = len(clean_article_div) 
-	data = "\n" + filename + "\t" + str(t)
+	data = "\n" + filename + "," + str(t)
 	Helpers.append_file_utf(data, training_tsv)
 
-	# print "Train on Article"
-	# print len(clean_article_div)
-	# i = 1 
-	# for child in clean_article_div.children:
-	# 	if isinstance(child, NavigableString):
-	# 		print "####"
-	# 		print i 
-	# 		print id(child)
-	# 		print len(child.string)
-	# 		print child.string
-	# 	else:
-	# 		print "####"
-	# 		print i 
-	# 		print child
-	# 	i += 1 
 
 	print "Starting training"
 	print len(clean_article_div)
@@ -305,7 +313,7 @@ def train_on_article (url, soup, clean_article_div, token_dic, b_dic):
 		if isinstance(child, NavigableString):
 			b_dic = training_loop(i,t,child.string,token_dic[child], b_dic)
 		else:
-			b_dic = training_loop(i,t,child.get_text("|", strip=True),token_dic[child], b_dic)
+			b_dic = training_loop(i,t,child.get_text("\n", strip=True),token_dic[child], b_dic)
 		i += 1 
 
 	return b_dic 
@@ -351,9 +359,8 @@ def training_loop(i,t, section_text, tokens, b_dic):
 
 		if cmd in valid_categories.keys():
 			b_dic = NaiveBayes.train(tokens,valid_categories[cmd], b_dic)
-
-			data = "\t" + cmd  
-			Helpers.append_file_utf(data, training_tsv) 
+ 
+			Helpers.append_file_utf(("," + cmd ), training_tsv) 
 			break 
 		
 		else: 
