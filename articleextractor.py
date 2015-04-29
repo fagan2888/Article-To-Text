@@ -111,16 +111,20 @@ def article_div_pre_processer (article_div):
 
 	# Remove tags that contain no content 
 	empty_tags = article_div.findAll(lambda tag: tag.is_empty_element or not tag.contents and (tag.string is None or not tag.string.strip()))
-	[empty_tag.extract() for empty_tag in empty_tags]
+	[empty_tag.decompose() for empty_tag in empty_tags]
 
 	# Remove empty navigable strings 
-	for child in article_div.children:
-		if isinstance(child, NavigableString):
-			if (len(child.string) <= 1): child.extract() 
+
+	for x in range(0,3):
+		for child in article_div:
+			if isinstance(child, NavigableString):
+				if (len(child.string.strip()) <= 1):
+					child.extract()
+	# This is a bit of a hack. I'm not sure why I need to do mutuple iterations over the list to find them all. May be a bug in butiful soup. 
 
 	return article_div 
 
-def article_tokenizer (article_div):
+def article_tokenizer (clean_article_div):
 	"""
 	For each html object one level below the article div, this function tokenizes it, 
 	and returns a dictionary keyed off of the beautiful soup child objects. 
@@ -135,7 +139,7 @@ def article_tokenizer (article_div):
 		return classes 
 	
 	token_dic = {}
-	for child in article_div.children:
+	for child in clean_article_div.contents:
 		child_tokens = []
 		if isinstance(child, NavigableString): # is NavigableString  
 			string = tokenize_string(child.string)
@@ -154,7 +158,7 @@ def article_tokenizer (article_div):
 			child_text = child.get_text().strip()
 			child_tokens += unique(child_tags) + unique(child_classes) + tokenize_string(child_text)
 
-		token_dic[id(child)] = child_tokens
+		token_dic[child] = child_tokens
 
 	return token_dic
 
@@ -162,30 +166,19 @@ def article_tokenizer (article_div):
 def bayes_processer (token_dic, b_dic):
 	scores = {}
 	for child in token_dic.keys():
-		scores[child] = NaiveBayes.guess(token_dic[id(child)],b_dic)
+		scores[child] = NaiveBayes.guess(token_dic[child],b_dic)
 
 	return scores 
 
 
 def article_extractor (score_dic, article_div):
 
-	for child in article_div: 
-		rankings = score_dic[child]
-		guess = NaiveBayes.extract_Winner(rankings) 
-		
-		print "******"
-		print guess 
-		if not isinstance(child, Comment):
-			print child.text
-		else: print child 
-
-
-		# print child.get_text()
-		if guess == "headline":
-			headline = child.get_text
-			child.extract()
-		elif guess != "article":
-			child.extract()
+	for x in range(0,3):
+		for child in article_div.contents: 
+			rankings = score_dic[child]
+			guess = NaiveBayes.extract_Winner(rankings) 
+			if guess != "article":
+				child.extract()
 		
 	return article_div
 
@@ -208,6 +201,23 @@ def article_post_processer(article_div):
 	return html2text.html2text(article_div.prettify())
 
 
+def print_div (article_div):
+
+	print "Total Elms"
+	print len(article_div)
+	i = 1 
+			
+	for child in clean_article_div.contents:
+		if isinstance(child, NavigableString):
+			print "####"
+			print i 
+			print child.string
+		else:
+			print "####"
+			print i 
+			print child.get_text
+		i += 1 
+
 def rebuild_training_dic (): 
 	
 	b_dic = {} 
@@ -226,22 +236,6 @@ def rebuild_training_dic ():
 			clean_article_div = article_div_pre_processer (article_div)
 			token_dic = article_tokenizer(clean_article_div)
 
-
-			print "Train on From file"
-			print len(clean_article_div)
-			i = 1 
-			
-			for child in clean_article_div.children:
-				if isinstance(child, NavigableString):
-					print "####"
-					print i 
-					print child.string
-				else:
-					print "####"
-					print i 
-					print child.get_text
-				i += 1 
-
 		
 			#Confirm invariants
 
@@ -256,9 +250,11 @@ def rebuild_training_dic ():
 			assert len(lst) == list_len
 			assert len(clean_article_div) == len(lst) 
 
-
+			c = 0 
 			for child in clean_article_div.children:
-				b_dic = NaiveBayes.train(token_dic[id(child)],valid_categories[lst[i]], b_dic)
+				b_dic = NaiveBayes.train(token_dic[child],valid_categories[lst[c]], b_dic)
+				c += 1 
+
 			i +=1 
 
 	print "processed ", str(i), " docs into b_dic. Training complete."
@@ -280,33 +276,36 @@ def train_on_article (url, soup, clean_article_div, token_dic, b_dic):
 	
 	Helpers.write_file_utf(html, training_dir + filename)
 
+
 	# Make new line in training file 
 	t = len(clean_article_div) 
 	data = "\n" + filename + "\t" + str(t)
 	Helpers.append_file_utf(data, training_tsv)
 
-	print "Train on Article"
-	print len(clean_article_div)
-	i = 1 
-	for child in clean_article_div.children:
-		if isinstance(child, NavigableString):
-			print "####"
-			print i 
-			print child.string
-		else:
-			print "####"
-			print i 
-			print child.get_text
-		i += 1 
+	# print "Train on Article"
+	# print len(clean_article_div)
+	# i = 1 
+	# for child in clean_article_div.children:
+	# 	if isinstance(child, NavigableString):
+	# 		print "####"
+	# 		print i 
+	# 		print id(child)
+	# 		print len(child.string)
+	# 		print child.string
+	# 	else:
+	# 		print "####"
+	# 		print i 
+	# 		print child
+	# 	i += 1 
 
 	print "Starting training"
 	print len(clean_article_div)
 	i = 1 
 	for child in clean_article_div.children:
 		if isinstance(child, NavigableString):
-			b_dic = training_loop(i,t,child.string,token_dic[id(child)], b_dic)
+			b_dic = training_loop(i,t,child.string,token_dic[child], b_dic)
 		else:
-			b_dic = training_loop(i,t,child.get_text("|", strip=True),token_dic[id(child)], b_dic)
+			b_dic = training_loop(i,t,child.get_text("|", strip=True),token_dic[child], b_dic)
 		i += 1 
 
 	return b_dic 
@@ -404,7 +403,7 @@ if __name__ == '__main__':
 		soup = soupify(raw_html)
 		article_div = page_pre_processer(soup)
 		clean_article_div = article_div_pre_processer (article_div)
-		token_dic = article_tokenizer (clean_article_div)
+		token_dic = article_tokenizer(clean_article_div)
 		b_dic = train_on_article(url, soup, clean_article_div, token_dic, b_dic)
 		Helpers.pickle_data(b_dic, 'bdic.data') 
 
