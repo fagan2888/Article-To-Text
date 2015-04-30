@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 # CS51 Final Project 2015 
 # Nathaniel Burbank 
 #   
@@ -15,6 +16,7 @@ from bs4 import BeautifulSoup, NavigableString, Comment
 import html2text
 
 # Other sections of the project 
+import Training
 import Helpers
 import NaiveBayes 
 import PreProcessor
@@ -41,8 +43,6 @@ Options:
 """
 debug = False
 
-training_dir = "trainingdata/"
-training_tsv = training_dir + "training.tsv"
 valid_categories = \
 {'h': 'headline', 'a': 'article', 'd': 'dateline', 'b':'byline', 's':'spam'}
 bdic_file = "bdic.data" 
@@ -67,8 +67,7 @@ def download_webpage(url):
 	if (debug): print "done"
 	return raw_html
 	
-
-def soupify (raw_html):
+def soupify(raw_html):
 	"""
 	Parses raw html into BeautifulSoup data structure. Also removes html comments
 	and javascript and style tags.
@@ -117,7 +116,7 @@ def article_div_extractor(soup):
 	
 	return article_div
 
-def article_div_pre_processer (article_div):
+def article_div_pre_processer(article_div):
 
 	# Remove tags that contain no content 
 	empty = lambda tag: tag.is_empty_element or \
@@ -141,7 +140,7 @@ def article_div_pre_processer (article_div):
 
 	return article_div 
 
-def article_tokenizer (clean_article_div):
+def article_tokenizer(clean_article_div):
 	"""
 	For each html object one level below the article div, this function 
 	tokenizes it, and returns a dictionary keyed off of the beautiful 
@@ -181,16 +180,14 @@ def article_tokenizer (clean_article_div):
 
 	return token_dic
 
-
-def bayes_processer (token_dic, b_dic):
+def bayes_processer(token_dic, b_dic):
 	scores = {}
 	for child in token_dic.keys():
 		scores[child] = NaiveBayes.guess(token_dic[child],b_dic)
 
 	return scores 
 
-
-def filter_article_div (score_dic, article_div, article_dic):
+def filter_article_div(score_dic, article_div, article_dic):
 
 	for x in range(0,3):
 		for child in article_div.contents: 
@@ -200,150 +197,6 @@ def filter_article_div (score_dic, article_div, article_dic):
 				child.extract()
 		
 	return article_div
-
-
-
-def rebuild_training_dic ():
-
-	print "\n Rebuilding bayes dic. . .",	
-	b_dic = {} 
-
-	training_data = Helpers.read_file_utf(training_tsv)
-
-	i = 0 
-	for line in training_data.split("\n"):
-		if line[0] not in ["#"]: 
-			lst = line.split(",")
-			filename = training_dir + lst.pop(0) #Both returns first elm and deletes it 
-
-			if (debug): print "loading " + filename 
-			if not (debug): print ".", 
-			list_len = int(lst.pop(0))
-			try: 
-				raw_html = Helpers.read_file_utf(filename)
-			except:
-				print "Error: unable to read " + filename
-				continue 
-
-			soup = BeautifulSoup(raw_html)
-			article_div = article_div_extractor(soup)
-			clean_article_div = article_div_pre_processer (article_div)
-			token_dic = article_tokenizer(clean_article_div)
-
-			#Confirm invariants
-			if not Helpers.training_invariants_met(lst,list_len,
-				clean_article_div,token_dic,valid_categories):
-				if (debug): print "Error: Skipping " + filename 
-				continue
-
-			c = 0 
-			for child in clean_article_div.children:
-				b_dic = NaiveBayes.train(token_dic[child],valid_categories[lst[c]], b_dic)
-				c += 1 
-
-			i +=1 
-
-	
-	Helpers.pickle_data(b_dic, bdic_file)
-	print "Done.\n"
-	print "Loaded ", str(i), " documents into b_dic. Training complete."
-
-	return b_dic 
-
-
-def train_on_article (url, soup, b_dic):
-
-	# Save artcle html to training dir 
-	#html = soup.renderContents()  
-
-	try:
-		training_data = Helpers.read_file_utf(training_tsv)
-	except:
-		print "Error: unable to read training data file."
-
-	
-	html = unicode(soup)
-	filecount = len(training_data.split("\n")) 
-	# Preprend a filecount before name to prevent namespace problems 
-
-	filename = str(filecount) + "_" + Helpers.filename_from_url(url) 
-
-	try:
-		Helpers.write_file_utf(html, training_dir + filename)
-	except:
-		print "Error: unable save " + filename + " to disc."
-		print "Training data for this article will not be retained."
-
-	reheated_soup = soupify(html)
-	article_div = article_div_extractor(reheated_soup)
-	clean_article_div = article_div_pre_processer (article_div)
-	token_dic = article_tokenizer(clean_article_div) 
-
-	# Make new line in training file 
-	t = len(clean_article_div) 
-	data = "\n" + filename + "," + str(t)
-	Helpers.append_file_utf(data, training_tsv)
-
-	i = 1 
-	for child in clean_article_div.children:
-		if isinstance(child, NavigableString):
-			b_dic = training_loop(i,t,child.string,token_dic[child], b_dic)
-		else:
-			b_dic = training_loop(i,t,child.get_text("\n", strip=True),token_dic[child], b_dic)
-		i += 1 
-
-	return b_dic 
-
-
-def training_loop(i,t, section_text, tokens, b_dic):
-
-	cmd = ""
-	Helpers.clear_screen() 
-	print "%d of %d" % (i,t)  
-	can_make_guesses = NaiveBayes.can_make_guesses(b_dic) 
-	
-	if can_make_guesses: 
-
-		guess = NaiveBayes.extract_Winner(NaiveBayes.guess(tokens,b_dic))
-		print "\nGuess is " + guess 
-
-		guess_key = ""
-		for key in valid_categories.keys():
-			if guess == valid_categories[key]: guess_key = key 
-
-		assert guess_key != "" 
-
-	print section_text
-	print "###########################"
-	print tokens 
-
-
-	while cmd != "q":
-
-		input_msg = "Enter A for article, H for headline, S for spam or junk content, D for date, B for byline:\n" 
-		if can_make_guesses: input_msg = "Hit enter to confirm guess or " + input_msg 
-
-		cmd = raw_input(input_msg)
-
-		if cmd == "q": 
-			break ##first check to see if a q was entered
-		
-		if not cmd and can_make_guesses: 
-			cmd = guess_key
-		else: 
-			cmd = cmd.lower() 
-
-		if cmd in valid_categories.keys():
-			b_dic = NaiveBayes.train(tokens,valid_categories[cmd], b_dic)
- 
-			Helpers.append_file_utf(("," + cmd ), training_tsv) 
-			break 
-		
-		else: 
-			print "Error ", cmd, " is an invalid command. Please try again, or enter q quit."
-
-	return b_dic
-
 
 def article_post_processer(article_div,article_dic):
 
@@ -364,6 +217,17 @@ def article_post_processer(article_div,article_dic):
 	return html2text.html2text(article_div.prettify())
 	#return article_div.prettify()
 
+def print_article(soup, url):
+	
+	article_dic = make_article_dic(soup,url)
+	article_div = article_div_extractor(soup)
+	clean_article_div = article_div_pre_processer (article_div)
+	token_dic = article_tokenizer(clean_article_div) 
+	b_scores = bayes_processer(token_dic, b_dic)
+	article_div_processed = filter_article_div(b_scores, clean_article_div, article_dic)				
+	#Helpers.clear_screen() 
+	print article_post_processer(article_div_processed,article_dic)
+
 
 if __name__ == '__main__':
 
@@ -379,7 +243,8 @@ if __name__ == '__main__':
 			print "Usage: ./ArticleToText.py url [options]" 
 			break  		
 		
-		else:
+		else: 
+			#First, identify which flags were included 
 			for arg in sys.argv[1:]:
 				if Helpers.is_url(Helpers.clean_url(arg)): 
 					url = Helpers.clean_url(arg)
@@ -396,18 +261,19 @@ if __name__ == '__main__':
 				elif arg.lower() in ['-h','--help', 'help']:
 					needhelp = True
 
+			# Next, act on the optional flags, as needed. 
 			if needhelp:
 				print help_message
 				break 
 
 			if rebuild:
-				b_dic = rebuild_dic() 
+				b_dic = Training.rebuild_t_dic() 
 			else: 
 				try:
 					b_dic = Helpers.load_pickle(bdic_file)
 				except: 
 					print "\nError: could not load bayes dictionary."
-					b_dic = rebuild() 
+					b_dic = Training.rebuild_t_dic() 
 
 			if not url and not rebuild: 
 				print "Error: must include a valid url"
@@ -423,24 +289,24 @@ if __name__ == '__main__':
 			try: 
 				soup = soupify(raw_html)
 			except:
-				"Error: unable to parse " + url 
+				"Error: unable to parse " + url + " with BeautifulSoup"
 				break 
 
 			if train:
-				b_dic = train_on_article(url, soup, b_dic)
+				b_dic = Training.t_on_article(url, soup, b_dic)
 				Helpers.pickle_data(b_dic, bdic_file)
 				break 
+			else: 
+				if not NaiveBayes.can_make_guesses(b_dic):
+					b_dic = Training.rebuild_t_dic()
+				elif not NaiveBayes.can_make_guesses(b_dic):
+					print "Error: not enough data or malformed bayes dictionary."
+					break 
 			
-			# Standard behavior 
-			article_dic = make_article_dic(soup,url)
-			article_div = article_div_extractor(soup)
-			clean_article_div = article_div_pre_processer (article_div)
-			token_dic = article_tokenizer(clean_article_div) 
-			b_scores = bayes_processer(token_dic, b_dic)
-			article_div_processed = filter_article_div(b_scores, clean_article_div, article_dic)
-				
-			#Helpers.clear_screen() 
-			print article_post_processer(article_div_processed,article_dic)
+			# If we’ve made it this far down the loop, just do standard
+			# behavior and print the article
+
+			print_article(soup, url)
 			break 
 			
 		break 
