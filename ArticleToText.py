@@ -3,16 +3,18 @@
 # Nathaniel Burbank 
 #   
 
-### External Librarys 
-from bs4 import BeautifulSoup, NavigableString, Comment
+# Standard Librarys  
 import urllib2
-import html2text
 import sys 
 import codecs
 import sys 
 import re 
 
-## Other sections of the project 
+# External Librarys 
+from bs4 import BeautifulSoup, NavigableString, Comment
+import html2text
+
+# Other sections of the project 
 import Helpers
 import NaiveBayes 
 import PreProcessor
@@ -50,6 +52,9 @@ bdic_file = "bdic.data"
 ### Main functions 
 
 def download_webpage(url): 
+	# Downloades webpage using urllib2 and returns unprocessed html.  
+
+		
 	if (debug): print "Downloading webpage source for", url, "...", 
 		
 	#make an url opener that can handle cookies so this works with NYtimes... 
@@ -57,14 +62,17 @@ def download_webpage(url):
 	opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 	#read in the site
 	response = opener.open(url)
-	html = response.read()
+	raw_html = response.read()
 	
 	if (debug): print "done"
-	return html
+	return raw_html
 	
 
 def soupify (raw_html):
-	
+	"""
+	Parses raw html into BeautifulSoup data structure. Also removes html comments
+	and javascript and style tags.
+	"""
 	soup = BeautifulSoup(raw_html)
 
 	# just delete javascript and style tags 
@@ -78,6 +86,11 @@ def soupify (raw_html):
 	return soup 
 
 def make_article_dic(soup, url):
+	"""
+	Returns a dictionary object with metadata about the article. For now, just
+	contains the url and page title, but plan to extend further with date and
+	other attributes if I have time. 
+	"""
 
 	article_dic = {}
 	article_dic[url] = url 
@@ -89,9 +102,12 @@ def make_article_dic(soup, url):
 
 	return article_dic 
 
-
-
-def article_div_extractor (soup):
+def article_div_extractor(soup):
+	"""
+	Returns a pointer to the div that (likely) contains the article text within
+	the Beautiful Soup data structure. Guess is based on a set of heuristics
+	hard-coded within the PreProcessor module.  
+	"""
 
 	div_list = PreProcessor.tokenizer(soup) 
 	div_score_table = PreProcessor.div_selector(div_list, soup)
@@ -187,8 +203,9 @@ def filter_article_div (score_dic, article_div, article_dic):
 
 
 
-def rebuild_training_dic (): 
-	
+def rebuild_training_dic ():
+
+	print "\n Rebuilding bayes dic. . .",	
 	b_dic = {} 
 
 	training_data = Helpers.read_file_utf(training_tsv)
@@ -226,6 +243,8 @@ def rebuild_training_dic ():
 
 			i +=1 
 
+	
+	Helpers.pickle_data(b_dic, bdic_file)
 	print "Done.\n"
 	print "Loaded ", str(i), " documents into b_dic. Training complete."
 
@@ -348,24 +367,19 @@ def article_post_processer(article_div,article_dic):
 
 if __name__ == '__main__':
 
-	def rebuild_dic():
-		print "\n Rebuilding bayes dic. . .",
-		b_dic = rebuild_training_dic() 
-		Helpers.pickle_data(b_dic, bdic_file)
-		return b_dic 
-
 	rebuild = False 
 	train = False 
-	help = False 
+	needhelp = False 
 	url = False 
 	unittests = False 
 
 	while(True):
 		if len(sys.argv) <= 1: 
 			print "Error: No aurguments provided"
-			break  
-			
-		elif len(sys.argv) >= 2:
+			print "Usage: ./ArticleToText.py url [options]" 
+			break  		
+		
+		else:
 			for arg in sys.argv[1:]:
 				if Helpers.is_url(Helpers.clean_url(arg)): 
 					url = Helpers.clean_url(arg)
@@ -380,9 +394,9 @@ if __name__ == '__main__':
 					debug = True
 
 				elif arg.lower() in ['-h','--help', 'help']:
-					help = True
+					needhelp = True
 
-			if help:
+			if needhelp:
 				print help_message
 				break 
 
@@ -428,6 +442,5 @@ if __name__ == '__main__':
 			#Helpers.clear_screen() 
 			print article_post_processer(article_div_processed,article_dic)
 			break 
-
+			
 		break 
-
