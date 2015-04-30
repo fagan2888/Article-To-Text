@@ -4,8 +4,51 @@ import urlparse
 import codecs
 import pickle
 import sys 
+import re 
 
 debug = False
+
+def clear_screen(): 
+	print(chr(27) + "[2J")  
+
+def unique (token_list):
+	# Returns list with unique values only 
+	unique_tokens = []
+	[unique_tokens.append(item) for item in token_list if item not in unique_tokens]
+	return unique_tokens 
+		
+
+def stem(word):
+# Super simple word stemmer, that removes common English suffixes. 
+# Obviously not perfect and could be (vastly!) improved, but that is out scope for now. 
+	for suffix in ['ing','ly','ed','ious','ies','ive','es',"'s",'ment']:
+		if word.endswith(suffix):
+			return word[:-len(suffix)]
+	
+	return word 
+
+def tokenize_string (text):
+	"""
+	Very rudimentary tokenizer. Converts a sentence such as this:
+	Hey!! You can't use those. Those are Jack's  bowling balls! 
+	Into a list of unique, stemmed words like this: 
+	['hey', '!', 'you', "can't", 'use', 'those', '.', 'are', 'jack', 'bowl', 'balls']
+
+	Unlike many stemming functions, I decided to explicitly include punctuation, 
+	as I think it may have meaning in this context. 
+
+	"""
+
+	text_with_punc = re.sub(r"([.!,;?])", r" \1 ", text) 
+	#Add spaces to certain puncuation so that it's preserverd in the next step
+
+	words = re.sub("[^\w.!,;?']", " ", text_with_punc).lower().split()
+	# Normalize spaces, lowercase everything, then convert string to list of words 
+	
+	stemmed_words = []
+	[stemmed_words.append(stem(word)) for word in words]
+	
+	return unique(stemmed_words)
 
 
 def print_div (article_div):
@@ -98,7 +141,6 @@ def read_file_utf(filename):
 	if (debug): print "done" 
 	return data
 
-
 def append_file_utf(data, filename):
 	if (debug):  print "appending data to", filename, "...",
 	try: 
@@ -111,7 +153,6 @@ def append_file_utf(data, filename):
 		print "Unable to find file", filename
 		raise NameError('File does not exist...') 
 
-
 def pickle_data(data, filename):
 	if (debug): print "Pickleing data to", filename, "...",
 	file = open(filename, 'wb')
@@ -120,11 +161,11 @@ def pickle_data(data, filename):
 	if (debug): print "done" 
 
 def load_pickle(filename):
-	print "Unpickling data from file", filename, "...", 
+	if (debug): print "Unpickling data from file", filename, "...", 
 	file = open(filename, 'rb')
 	data = pickle.load(file)
 	file.close()
-	print "done" 
+	if (debug): print "done" 
 	return data
 
 	
