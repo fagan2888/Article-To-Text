@@ -17,12 +17,34 @@ import Helpers
 import NaiveBayes 
 import PreProcessor
 
+# Global variables 
+
+help_message = \
+"""
+ArticleToText 
+Harvard CS51 Final Project 2015 
+Nathaniel Burbank 
+
+Usage: ./ArticleToText.py url [options] 
+
+Options:
+  -h, --help    Show this help message and exit.
+  -d, --debug	Print debugging information while running.
+  -r, --rebuild	Rebuild the Bayes data structure based on the webpages 
+  				in the training directory and training.tsv file.
+  -t, --train	Run supervised trainer on submitted url. Save results to 
+  				training directory and Bayes data structure.  
+  -u, --unit	Run unit tests and exit.
+  
+"""
 debug = False
 
 training_dir = "trainingdata/"
 training_tsv = training_dir + "training.tsv"
-valid_categories = {'h': 'headline', 'a': 'article', 'd': 'dateline', 'b':'byline', 's':'spam'}
+valid_categories = \
+{'h': 'headline', 'a': 'article', 'd': 'dateline', 'b':'byline', 's':'spam'}
 bdic_file = "bdic.data" 
+
 
 
 ### Main functions 
@@ -324,27 +346,58 @@ def article_post_processer(article_div,article_dic):
 	#return article_div.prettify()
 
 
-
 if __name__ == '__main__':
 
-	while(True):
+	def rebuild_dic():
+		print "\n Rebuilding bayes dic. . .",
+		b_dic = rebuild_training_dic() 
+		Helpers.pickle_data(b_dic, bdic_file)
+		return b_dic 
 
+	rebuild = False 
+	train = False 
+	help = False 
+	url = False 
+	unittests = False 
+
+	while(True):
 		if len(sys.argv) <= 1: 
 			print "Error: No aurguments provided"
 			break  
 			
 		elif len(sys.argv) >= 2:
+			for arg in sys.argv[1:]:
+				if Helpers.is_url(Helpers.clean_url(arg)): 
+					url = Helpers.clean_url(arg)
 
-			try:
-				b_dic = Helpers.load_pickle(bdic_file)
-			except: 
-				print "\nError: could not load bayes dictionary. \n Rebuilding. . .",
-				b_dic = rebuild_training_dic() 
-				Helpers.pickle_data(b_dic, bdic_file)
+				elif arg.lower() in ['-r','--rebuild']:
+					rebuild = True 
 
-			url = Helpers.clean_url(sys.argv[1])
-			if not Helpers.is_url(url):
-				print "Error: " + url + " does not appear to be a valid url"
+				elif arg.lower() in ['-t','--train']:
+					train = True 
+
+				elif arg.lower() in ['-d','--debug']:
+					debug = True
+
+				elif arg.lower() in ['-h','--help', 'help']:
+					help = True
+
+			if help:
+				print help_message
+				break 
+
+			if rebuild:
+				b_dic = rebuild_dic() 
+			else: 
+				try:
+					b_dic = Helpers.load_pickle(bdic_file)
+				except: 
+					print "\nError: could not load bayes dictionary."
+					b_dic = rebuild() 
+
+			if not url and not rebuild: 
+				print "Error: must include a valid url"
+			elif not url:
 				break 
 
 			try: 
@@ -359,31 +412,22 @@ if __name__ == '__main__':
 				"Error: unable to parse " + url 
 				break 
 
+			if train:
+				b_dic = train_on_article(url, soup, b_dic)
+				Helpers.pickle_data(b_dic, bdic_file)
+				break 
+			
+			# Standard behavior 
 			article_dic = make_article_dic(soup,url)
 			article_div = article_div_extractor(soup)
 			clean_article_div = article_div_pre_processer (article_div)
 			token_dic = article_tokenizer(clean_article_div) 
-			
-			if len(sys.argv) == 2:
-				# Standard usage. Print article text to the the screen. 
-				b_scores = bayes_processer(token_dic, b_dic)
-				article_div_processed = filter_article_div(b_scores, clean_article_div, article_dic)
-				#Helpers.clear_screen() 
-				print article_post_processer(article_div_processed,article_dic)
-				break 
-
-			else: 
-				for arg in sys.argv[2:]:
-					if arg.lower() in ['-r','-rebuild']:
-						b_dic = rebuild_training_dic() 
-						Helpers.pickle_data(b_dic, bdic_file)
-
-					elif arg.lower() in ['-t','-train']:
-						b_dic = train_on_article(url, soup, b_dic)
-						Helpers.pickle_data(b_dic, bdic_file) 
-
-					elif arg.lower() in ['-d','-debug']:
-						debug = True
-				break 
+			b_scores = bayes_processer(token_dic, b_dic)
+			article_div_processed = filter_article_div(b_scores, clean_article_div, article_dic)
+				
+			#Helpers.clear_screen() 
+			print article_post_processer(article_div_processed,article_dic)
+			break 
 
 		break 
+

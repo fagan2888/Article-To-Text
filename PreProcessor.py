@@ -5,7 +5,7 @@ import re
 import codecs
 from tabulate import tabulate
 
-debug = False
+debug = True
 
 
 def tokenizer (soup):
