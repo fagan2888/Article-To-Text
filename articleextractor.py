@@ -9,7 +9,6 @@ import urllib2
 import html2text
 import sys 
 import codecs
-import pickle
 import sys 
 import re 
 
@@ -138,10 +137,10 @@ def article_div_pre_processer (article_div):
 				if (len(child.string.strip()) <= 1):
 					child.extract()
 	
-	# The x in range loop bit is a bit of a hack. I'm not sure why I need to do multiple
-	# iterations over the list of children to find all of the empty navigable
-	# strings, but if I don't, some are left behind and it causes problems
-	# further below. Might be a bug in BeautifulSoup.
+	# The x in range loop bit above is a bit of a hack. I'm not sure why I
+	# need to do multiple iterations over the list of children to find all of
+	# the empty navigable strings, but if I don't, some are left behind and it
+	# causes problems further below. Might be a bug in BeautifulSoup.
 
 	return article_div 
 
@@ -222,25 +221,6 @@ def article_post_processer(article_div):
 	return html2text.html2text(article_div.prettify())
 
 
-def print_div (article_div):
-
-	t = len(article_div)
-	i = 1 
-			
-	for child in article_div.contents:
-		if isinstance(child, NavigableString):
-			print "####"
-			print "%d of %d" % (i,t) 
-			print len(child.string)
-			print child.string
-		else:
-			print "####"
-			print "%d of %d" % (i,t) 
-			print child
-		i += 1 
-
-
-
 def rebuild_training_dic (): 
 	
 	b_dic = {} 
@@ -253,29 +233,23 @@ def rebuild_training_dic ():
 			lst = line.split(",")
 			filename = training_dir + lst.pop(0) #Both returns first elm and deletes it 
 
-			print "starting " + filename 
-			list_len = int(lst.pop(0)) 
-			raw_html = Helpers.read_file_utf(filename) 
+			print "loading " + filename 
+			list_len = int(lst.pop(0))
+			try: 
+				raw_html = Helpers.read_file_utf(filename)
+			except:
+				print "Error: unable to read " + filename
+				continue 
+
 			soup = BeautifulSoup(raw_html)
 			article_div = page_pre_processer(soup)
 			clean_article_div = article_div_pre_processer (article_div)
 			token_dic = article_tokenizer(clean_article_div)
 
-		
 			#Confirm invariants
-
-			for tag in lst:
-				assert tag.lower() in valid_categories.keys() 
-			
-			print "Num of children: " + str(len(clean_article_div))
-			print "Expected number of classifcations" + str(list_len)
-			print "Number of classifcations " + str(len(lst)) 
-			print "Number of keys " + str(len(token_dic.keys()))  
-			
-			if filename == "trainingdata/story.html": print_div(clean_article_div)
-
-			assert len(lst) == list_len
-			assert len(clean_article_div) == len(lst) 
+			if not Helpers.training_invariants_met(lst,list_len,clean_article_div,token_dic,valid_categories):
+				print "Error: Skipping " + filename 
+				continue
 
 			c = 0 
 			for child in clean_article_div.children:
@@ -289,25 +263,39 @@ def rebuild_training_dic ():
 	return b_dic 
 
 
-def train_on_article (url, soup, clean_article_div, token_dic, b_dic):
+def train_on_article (url, soup, b_dic):
 
 	# Save artcle html to training dir 
 	#html = soup.renderContents()  
+
+	try:
+		training_data = Helpers.read_file_utf(training_tsv)
+	except:
+		print "Error: unable to read training data file."
+
+	
 	html = unicode(soup)
-	filename = Helpers.filename_from_url(url) 
+	filecount = len(training_data.split("\n")) 
+	# Preprend a filecount before name to prevent namespace problems 
 
-	Helpers.write_file_utf(html, training_dir + filename)
+	filename = str(filecount) + "_" + Helpers.filename_from_url(url) 
 
-	print_div(clean_article_div)
+	try:
+		Helpers.write_file_utf(html, training_dir + filename)
+	except:
+		print "Error: unable save " + filename + " to disc."
+		print "Training data for this article will not be retained."
+
+	reheated_soup = soupify(html)
+	article_div = page_pre_processer(reheated_soup)
+	clean_article_div = article_div_pre_processer (article_div)
+	token_dic = article_tokenizer(clean_article_div) 
 
 	# Make new line in training file 
 	t = len(clean_article_div) 
 	data = "\n" + filename + "," + str(t)
 	Helpers.append_file_utf(data, training_tsv)
 
-
-	print "Starting training"
-	print len(clean_article_div)
 	i = 1 
 	for child in clean_article_div.children:
 		if isinstance(child, NavigableString):
@@ -369,12 +357,6 @@ def training_loop(i,t, section_text, tokens, b_dic):
 	return b_dic
 
 
-def process_html(raw_html):
-	article_div = page_pre_processer(raw_html)
-	clean_article_div = article_div_pre_processer (article_div)
-	return article_tokenizer(article_div)
-
-
 if __name__ == '__main__':
 
 	while(True):
@@ -395,7 +377,7 @@ if __name__ == '__main__':
 
 			url = Helpers.clean_url(sys.argv[1])
 			if not Helpers.is_url(url):
-				print "Error: first aurgument does not appear to be a url"
+				print "Error: " + url + " does not appear to be a valid url"
 				break 
 
 			try: 
@@ -420,23 +402,18 @@ if __name__ == '__main__':
 				print article_post_processer(article_div_processed)
 				break 
 
-			elif sys.argv[2] == '-t':
-				b_dic = train_on_article(url, soup, clean_article_div, token_dic, b_dic)
-				Helpers.pickle_data(b_dic, 'bdic.data') 
+			else: 
+				for arg in sys.argv[2:]:
+					if arg.lower() in ['-r','-rebuild']:
+						b_dic = rebuild_training_dic() 
+						Helpers.pickle_data(b_dic, 'bdic.data')
+
+					elif arg.lower() in ['-t','-train']:
+						b_dic = train_on_article(url, soup, b_dic)
+						Helpers.pickle_data(b_dic, 'bdic.data') 
+
+					elif arg.lower() in ['-d','-debug']:
+						debug = True
 				break 
 
-
-
-
-
-
-
-
-	
-
-
-
-		
-	
-		
-	
+		break 

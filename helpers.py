@@ -8,6 +8,42 @@ import sys
 debug = False
 
 
+def print_div (article_div):
+
+	t = len(article_div)
+	i = 1 
+			
+	for child in article_div.contents:
+		if isinstance(child, NavigableString):
+			print "####"
+			print "%d of %d" % (i,t) 
+			print len(child.string)
+			print child.string
+		else:
+			print "####"
+			print "%d of %d" % (i,t) 
+			print child
+		i += 1 
+
+
+def training_invariants_met(lst,list_len,clean_article_div,token_dic,valid_categories):
+
+	if (debug): print "Num of children: " + str(len(clean_article_div))
+	if (debug): print "Expected number of classifcations" + str(list_len)
+	if (debug): print "Number of classifcations " + str(len(lst)) 
+	if (debug): print "Number of keys " + str(len(token_dic.keys()))  
+
+	invariants_met = True 
+	for tag in lst:
+		if tag.lower() not in valid_categories.keys(): 
+			invariants_met = False 
+
+	if len(lst) != list_len or len(clean_article_div) != len(lst):
+		invariants_met = False 
+
+	return invariants_met
+
+
 ### URL functions 
 
 def is_url(string): 
