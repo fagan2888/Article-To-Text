@@ -109,7 +109,7 @@ def make_article_dic(soup, url):
 		article_dic[date] = soup.date.string
 	except:
 		print "could not find date"
-		
+
 	return article_dic 
 
 
@@ -138,10 +138,10 @@ def article_div_pre_processer (article_div):
 				if (len(child.string.strip()) <= 1):
 					child.extract()
 	
-	# The x in range loop bit of this is a hack. I'm not sure why I need to do multiple
+	# The x in range loop bit is a bit of a hack. I'm not sure why I need to do multiple
 	# iterations over the list of children to find all of the empty navigable
 	# strings, but if I don't, some are left behind and it causes problems
-	# further below.  Might be a bug in BeautifulSoup.
+	# further below. Might be a bug in BeautifulSoup.
 
 	return article_div 
 
@@ -377,42 +377,54 @@ def process_html(raw_html):
 
 if __name__ == '__main__':
 
+	while(True):
 
-	#raw_html = Helpers.read_file_utf(sys.argv[1])
-	#if Helpers.is_url(sys.argv[1]):
+		if len(sys.argv) <= 1: 
+			print "Error: No aurguments provided"
+			break  
+			
+		elif len(sys.argv) >= 2:
 
-	try:
-		b_dic = Helpers.load_pickle('bdic.data')
-	except: 
-		print "Error: could not load bayes dictionary"
-		b_dic = {}
-	
-	if len(sys.argv) < 2: 
-		print "Error: No aurguments provided" 
-		b_dic = rebuild_training_dic() 
-		Helpers.pickle_data(b_dic, 'bdic.data') 
+			try:
+				b_dic = Helpers.load_pickle('bdic.data')
+			except: 
+				print "Error: could not load bayes dictionary. Rebuilding..."
+				b_dic = rebuild_training_dic() 
+				Helpers.pickle_data(b_dic, 'bdic.data')
+				break 
 
-	elif len(sys.argv) == 2:
+			url = Helpers.clean_url(sys.argv[1])
+			if not Helpers.is_url(url):
+				print "Error: first aurgument does not appear to be a url"
+				break 
 
-		url = sys.argv[1] 
-		raw_html = download_webpage(url)
-		soup = soupify(raw_html)
-		article_div = page_pre_processer(soup)
-		clean_article_div = article_div_pre_processer (article_div)
-		token_dic = article_tokenizer(clean_article_div) 
-		b_scores = bayes_processer(token_dic, b_dic)
-		article_div_processed = article_extractor(b_scores, clean_article_div)
-		print article_post_processer(article_div_processed)
+			try: 
+				raw_html = download_webpage(url)
+			except:
+				print "Error: unable to download " + url 
+				break
 
-	elif len(sys.argv) == 3:
-		url = sys.argv[1] 
-		raw_html = download_webpage(url)
-		soup = soupify(raw_html)
-		article_div = page_pre_processer(soup)
-		clean_article_div = article_div_pre_processer (article_div)
-		token_dic = article_tokenizer(clean_article_div)
-		b_dic = train_on_article(url, soup, clean_article_div, token_dic, b_dic)
-		Helpers.pickle_data(b_dic, 'bdic.data') 
+			try: 
+				soup = soupify(raw_html)
+			except:
+				"Error: unable to parse " + url 
+				break 
+
+			article_div = page_pre_processer(soup)
+			clean_article_div = article_div_pre_processer (article_div)
+			token_dic = article_tokenizer(clean_article_div) 
+			
+			if len(sys.argv) == 2:
+				b_scores = bayes_processer(token_dic, b_dic)
+				article_div_processed = article_extractor(b_scores, clean_article_div)
+				print article_post_processer(article_div_processed)
+				break 
+
+			elif sys.argv[2] == '-t':
+				b_dic = train_on_article(url, soup, clean_article_div, token_dic, b_dic)
+				Helpers.pickle_data(b_dic, 'bdic.data') 
+				break 
+
 
 
 
