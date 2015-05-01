@@ -3,12 +3,15 @@
 from bs4 import BeautifulSoup 
 import re
 import codecs
-from tabulate import tabulate
 
 debug = False 
 
 
 def tokenizer (soup):
+	'''
+	Returns an iterator containing all div, article and nav elements that exist 
+	within the soup. Elements may (and frequently are) overlapping with one another. 
+	'''
 	token_list = soup.find_all(['div','article','nav'])
 	return token_list	
 
@@ -51,7 +54,8 @@ def article_selector (token_list, soup):
 			pars = len(token.find_all('p', recursive=False))/float(page_num_of_pars)
 			token_stats.append(pars)
 
-			# Becuase the paragraph is a factor in  the following two statistics, this puts in a floor 
+			# Becuase the paragraph is a factor in the following two statistics, 
+			# this puts in a floor 
 			pars_a = max(.1,pars)
 
 			#Ratio of sentences to link tags, weighted by paragraph tags 
@@ -64,13 +68,15 @@ def article_selector (token_list, soup):
 			token_stats.append(text_density)
 
 			#Weighted score metric, based on a regression analysis of small set of sample data. 
-			score = -.0079908 + (.0225799 * sentence_num_adjusted) + (1.319708  * pars) + ( -.0017439  *  StoLP) + (.55502 * text_density)
-			token_stats.append(score)
+			article_likeliness_score = -.0079908 + (.0225799 * sentence_num_adjusted) + \
+			(1.319708  * pars) + ( -.0017439  *  StoLP) + (.55502 * text_density)
+			token_stats.append(article_likeliness_score)
 			
 			output.append(token_stats)
 
 		i = i + 1 
 
+	# Sort by score, and then return the div ID at the top 
 	output.sort(key=lambda x: (x[5],x[1]),reverse=True)
 	article_div_id = output[0][0]
 	

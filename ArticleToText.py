@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-#
 # 	Article To Text
 # 	CS51 Final Project 2015 
 # 	Nathaniel Burbank 
 # 
 # 
+
 # Standard Libraries 
 import urllib2
 import sys 
@@ -35,15 +35,12 @@ Nathaniel Burbank
 Usage: ./ArticleToText.py url [options] 
 
 Options:
-  -f, --file 	Save output to .txt file in working directory.  
+  -f, --file 	Save output to .txt file in the current working directory.  
   -h, --help    Show this help message and exit.
-  -d, --debug	Print debugging information while running.
   -r, --rebuild	Rebuild the Bayes data structure based on the webpages 
   				in the training directory and training.tsv file.
   -t, --train	Run supervised trainer on submitted url. Save results to 
   				training directory and Bayes data structure.  
-  -u, --unit	Run unit tests and exit.
-  
 """
 
 debug = False

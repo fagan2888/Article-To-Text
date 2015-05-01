@@ -19,7 +19,7 @@ import sys
 # Global variables
 
 training_dir = "trainingdata/"
-training_tsv = training_dir + "training.tsv"
+training_tsv = training_dir + "training.csv"
 
 
 def t_on_article (url, soup, b_dic):
@@ -88,7 +88,7 @@ def get_input(i,t, section_text, tokens, b_dic, headline):
 	can_make_guesses = NaiveBayes.can_make_guesses(b_dic) 
 	
 	if can_make_guesses: 
-		guess = NaiveBayes.extract_Winner(NaiveBayes.guess(tokens,b_dic))
+		guess = NaiveBayes.extract_winner(NaiveBayes.guess(tokens,b_dic))
 		print "\nGuess is " + guess.upper() + "\n\n"
 
 		# 'article' -> 'a'  
