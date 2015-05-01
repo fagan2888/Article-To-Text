@@ -7,14 +7,14 @@
 # 
 # 
 
-# Standard Libraries 
+# Standard libraries 
 import urllib2
 import sys 
 import codecs
 import sys 
 import re 
 
-# External third party libraries 
+# External third-party libraries 
 from bs4 import BeautifulSoup, NavigableString, Comment
 import html2text
 
@@ -28,13 +28,19 @@ import DivExtractor
 
 help_message = \
 """
-ArticleToText 
+Article-To-Text
+A python command line utility for intelligently converting webpages into text files
+
 Harvard CS51 Final Project 2015 
 Nathaniel Burbank 
 
-Usage: ./ArticleToText.py url [options] 
+Usage: ./ArticleToText.py url [optional flags] 
 
-Options:
+For example: 
+
+./ArticleToText.py http://www.seattletimes.com/nation-world/forest-service-may-blow-up-frozen-cows-in-cabin/
+
+Optional flags: 
   -f, --file 	Save output to .txt file in the current working directory.  
   -h, --help    Show this help message and exit.
   -r, --rebuild	Rebuild the Bayes data structure based on the webpages 

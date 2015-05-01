@@ -11,6 +11,8 @@ import math
 
 debug = False 
 
+## helper functions ## 
+
 def inc_token(token,label,b_dic):
 	# Increments the count for a given token/label pair 
 
@@ -71,7 +73,8 @@ def token_label_count(token, label, b_dic):
 	return count 
 	
 def token_Inverse_Label_Count (token, l, b_dic):
-	# Returns how many times the given token occurs for lables other than the given label 
+	# Returns how many times the given token occurs for lables other than 
+	# the given label 
 	count = 0
 	for label in labels(b_dic):
 		if (label != l): 
@@ -100,7 +103,7 @@ def can_make_guesses(b_dic):
 		return False 
 
 
-#Main functions 
+## Main functions ## 
 
 def train_With_list(lst,tokenize_f,b_dic):
 	for item in lst:
@@ -184,7 +187,7 @@ def guess(tokens, b_dic):
 def extract_winner (scores):
 	# Takes in a score_dict (as produced by guess above) and returns 
 	# the value with highest score. 
-	
+
 	bestScore = 0
 	bestLabel = ""
 	for label in scores.keys(): 
