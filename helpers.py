@@ -1,4 +1,9 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+# CS51 Final Project 2015 
+# Nathaniel Burbank 
+# 
+# Helper module 
 
 import urlparse
 import codecs
@@ -6,9 +11,11 @@ import pickle
 import sys 
 import re 
 
-debug = False
+debug = False 
 
-def clear_screen(): 
+
+def clear_screen():
+	# Clear's terminal screen 
 	print(chr(27) + "[2J")  
 
 def unique (token_list):
@@ -69,6 +76,14 @@ def print_div (article_div):
 		i += 1 
 
 
+def print_progress_bar(width, i):
+	sys.stdout.write('[')
+	for x in xrange(width):
+		if x < i: sys.stdout.write('-')
+		else: sys.stdout.write(' ')
+	sys.stdout.write(']\n')
+	sys.stdout.flush()
+
 def training_invariants_met(lst,list_len,clean_article_div,token_dic,valid_categories):
 
 	if (debug): print "Num of children: " + str(len(clean_article_div))
@@ -96,15 +111,6 @@ def is_url(string):
 	else: 
 		return True 
 
-def filename_from_url(url):
-	# Extracts final part of a url 
-	# ...nyregion/etan-patz-trial-jury.html ->  "etan-patz-trial-jury.html"
-	if url[-1] == "/": url = url[:-1]
-	filename = url.split('/')[-1].split('#')[0].split('?')[0]
-	if not (filename.endswith('html') or filename.endswith('htm')): 
-		filename += ".html"
-	return filename 
-
 def clean_url(url):
 	# Removes extraneous query  strings from urls 
 	# ...nyregion/etan-patz-trial-jury.html?hp&action=click -> nyregion/etan-patz-trial-jury.html 
@@ -112,6 +118,24 @@ def clean_url(url):
 	url_lst[-1] = url.split('/')[-1].split('#')[0].split('?')[0]
 	clean_url = '/'.join(url_lst)
 	return clean_url
+
+def filename_from_url(url):
+	# Extracts final part of a url 
+	# ...nyregion/etan-patz-trial-jury.html ->  "etan-patz-trial-jury.html"
+	if url[-1] == "/": url = url[:-1]
+	filename = url.split('/')[-1].split('#')[0].split('?')[0]
+	if not (filename.endswith('html') or filename.endswith('htm')): 
+		filename += ".html"
+	return filename
+
+def txt_filename_from_url(url):
+	# Extracts final part of a url and appends ".txt"
+	# ...nyregion/etan-patz-trial-jury.html ->  "etan-patz-trial-jury.txt"
+
+	c_url = clean_url(url)
+	if c_url[-1] == "/": c_url = c_url[:-1]
+	return c_url.split('/')[-1].split('.')[0] + ".txt"
+
 	
 def get_title_from_url(url):
 	# Converts urls into a title like this: 
