@@ -1,11 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Article To Text
-# CS51 Final Project 2015 
-# Nathaniel Burbank 
+#
+# 	Article To Text
+# 	CS51 Final Project 2015 
+# 	Nathaniel Burbank 
 # 
-
+# 
 # Standard Libraries 
 import urllib2
 import sys 
@@ -97,7 +98,7 @@ def make_article_dic(soup, url):
 	"""
 
 	article_dic = {}
-	article_dic[url] = url 
+	article_dic['url'] = url 
 	
 	try:
 		article_dic['headline'] = soup.title.string
@@ -160,17 +161,11 @@ def article_tokenizer(clean_article_div):
 	(if any.)  This function returns a dictionary of token lists keyed off 
 	of the beautiful soup child objects.
 	""" 
-
-	def get_classes(tag):
-		classes = []
-		if 'class' in tag.attrs: 
-			for c in tag.attrs['class']:
-				classes.append("[" + c + "]")
-		return classes 
 	
 	token_dic = {}
 	for child in clean_article_div.contents:
 		child_tokens = []
+		
 		#is NavigableString  
 		if isinstance(child, NavigableString): 
 			string = Helpers.tokenize_string(child.string)
@@ -180,13 +175,12 @@ def article_tokenizer(clean_article_div):
 			
 			# Build list of html tags in the child, including the parrent tag 
 			child_tags = [("<" + str(child.name) + ">")]  
-			child_classes = get_classes(child)
+			child_classes = Helpers.get_classes(child)
 			
-			#Recursively iterate though child tags  
 			for tag in child.find_all(True):
 				tag_name = "<" + str(tag.name) + ">"
 				child_tags.append(tag_name) 
-				child_classes += get_classes(tag)
+				child_classes += Helpers.get_classes(tag)
 
 			child_text = child.get_text().strip()
 			child_tokens += Helpers.unique(child_tags) + \
@@ -197,6 +191,10 @@ def article_tokenizer(clean_article_div):
 	return token_dic
 
 def get_bayes_scores(token_dic, b_dic):
+	'''
+	Uses the Bayes module to builds a dictionary of classification scores, 
+	one score set for each token. 
+	'''
 	scores = {}
 	for child in token_dic.keys():
 		scores[child] = NaiveBayes.guess(token_dic[child],b_dic)
@@ -204,46 +202,73 @@ def get_bayes_scores(token_dic, b_dic):
 	return scores 
 
 def filter_article_div(score_dic, article_div, article_dic):
+	'''
+	Iterates through the article div, removing anything that the 
+	classifier says it not article text. Also updates the article_dic with 
+	a new headline (if found). 
+	''' 
+	
+	headline_max = 0 
 
+	# Again, like above, need to make multiple loops to make sure 
+	# that the extract command actually takes. 
 	for x in range(0,3):
 		for child in article_div.contents: 
 			rankings = score_dic[child]
-			guess = NaiveBayes.extract_Winner(rankings) 
+			guess = NaiveBayes.extract_winner(rankings)
+			if guess == "headline":
+				# If we some how guess that more than one element is the 
+				# headline, want to make sure we get the one with 
+				# the highest score 
+				if rankings['headline'] > headline_max: 
+					article_dic['headline'] = child.get_text
+					headline_max = rankings['headline'] 
 			if guess != "article":
 				child.extract()
 		
-	return article_div
+	return article_dic
 
 def article_post_processer(article_div,article_dic):
+	'''
+	Final processing before output. Adds headline and source line, restricts 
+	html tags to a white-list set, before generating text 
+	with html-to-markdown converter. 
+	''' 
 
 	headline = article_dic['headline']
 	hl = BeautifulSoup("<h1>" + headline + "</h1>")
 	article_div.insert(0,hl)
-		
-	valid_tags = ['strong', 'em', 'p', 'ul', 'li', 'br', 'b', 'a', 'i'] 
-
+	
+	url = article_dic['url']
+	source = "<p>Source: " + url + "</p>"
+	
 	# Remove all attibutes from html tags 
 	for tag in article_div():
 		tag.attrs = None
 
+	# Only display html tags in this list
+	valid_tags = ['strong', 'em', 'p', 'ul', 'li', 'br', 'b', 'a', 'i'] 
 	for tag in article_div.findAll(True):
 		if tag.name not in valid_tags:
 			tag.hidden = True
 
-	return html2text.html2text(article_div.prettify())
-	#return article_div.prettify()
+	return html2text.html2text(article_div.prettify() + source)
 
 def get_article_text(soup, url):
-	
+	'''
+	Master function that calles most of the functions above to actually 
+	extract the text! 
+	''' 
+
 	article_dic = make_article_dic(soup,url)
 	article_div = article_div_extractor(soup)
 	clean_article_div = article_div_pre_processer (article_div)
 	token_dic = article_tokenizer(clean_article_div) 
 	b_scores = get_bayes_scores(token_dic, b_dic)
-	article_div_processed = filter_article_div \
-		(b_scores, clean_article_div, article_dic)				
-	#Helpers.clear_screen() 
-	return article_post_processer(article_div_processed,article_dic)
+	article_dic = filter_article_div \
+		(b_scores, clean_article_div, article_dic)	
+	
+	return article_post_processer(article_div,article_dic)
 
 
 if __name__ == '__main__':
@@ -343,6 +368,6 @@ if __name__ == '__main__':
 				print "Unable to write " + filename + " to working directory."
 			break 
 		else: 
-			print article_text
+			print "\n\n" + article_text
 			break 
 			

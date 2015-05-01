@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 # CS51 Final Project 2015 
 # Nathaniel Burbank 
-#   
+#  
+# Training Module   
+#
 
 from bs4 import BeautifulSoup, NavigableString, Comment
 from ArticleToText import valid_categories, article_div_extractor, \
@@ -20,58 +22,13 @@ training_dir = "trainingdata/"
 training_tsv = training_dir + "training.tsv"
 
 
-def rebuild_t_dic ():
-
-	print "\n Rebuilding bayes dic. . .",	
-	b_dic = {} 
-
-	training_data = Helpers.read_file_utf(training_tsv)
-
-	i = 0 
-	for line in training_data.split("\n"):
-		if line[0] not in ["#"]: 
-			lst = line.split(",")
-			filename = training_dir + lst.pop(0) #Both returns first elm and deletes it 
-
-			if (debug): print "loading " + filename 
-			if not (debug): print ".", 
-			list_len = int(lst.pop(0))
-			try: 
-				raw_html = Helpers.read_file_utf(filename)
-			except:
-				print "Error: unable to read " + filename
-				continue 
-
-			soup = BeautifulSoup(raw_html)
-			article_div = article_div_extractor(soup)
-			clean_article_div = article_div_pre_processer (article_div)
-			token_dic = article_tokenizer(clean_article_div)
-
-
-			#Confirm invariants
-			if not Helpers.training_invariants_met(lst,list_len,
-				clean_article_div,token_dic,valid_categories):
-				if (debug): print "Error: Skipping " + filename 
-				continue
-
-			c = 0 
-			for child in clean_article_div.children:
-				b_dic = NaiveBayes.train(token_dic[child],valid_categories[lst[c]], b_dic)
-				c += 1 
-
-			i +=1 
-
-	
-	Helpers.pickle_data(b_dic, bdic_file)
-	print "Done.\n"
-	print "Loaded ", str(i), " documents into b_dic. Training complete."
-
-	return b_dic 
-
-
 def t_on_article (url, soup, b_dic):
 	'''
-	Train on article 
+	Controller function for training process. Saves copy of webpage in 
+	training data directory; rebuilds soup after converting to Unicode and 
+	back (to avoid some harry conversion inconsistences); then iterates 
+	through children of article div and calls get_input on each one to 
+	get (and save) a classification for each one. 
 	''' 
 
 	try:
@@ -167,3 +124,57 @@ def get_input(i,t, section_text, tokens, b_dic, headline):
 			print "Error: '", cmd.upper(), "' is an invalid command. Please try again."
 
 	return b_dic
+
+
+
+def rebuild_t_dic ():
+	'''
+	Rebuilds the bayes_dic from scratch, going line by line through the 
+	training.csv file, using the downloaded webpages and saved 
+	classifications in the training data directory. 
+	'''
+
+	print "\n Rebuilding bayes dic. . .",	
+	b_dic = {} 
+
+	training_data = Helpers.read_file_utf(training_tsv)
+
+	i = 0 
+	for line in training_data.split("\n"):
+		if line[0] not in ["#"]: 
+			lst = line.split(",")
+			filename = training_dir + lst.pop(0) 
+
+			if (debug): print "loading " + filename 
+			if not (debug): print ".", 
+			list_len = int(lst.pop(0))
+			try: 
+				raw_html = Helpers.read_file_utf(filename)
+			except:
+				print "Error: unable to read " + filename
+				continue 
+
+			soup = BeautifulSoup(raw_html)
+			article_div = article_div_extractor(soup)
+			clean_article_div = article_div_pre_processer (article_div)
+			token_dic = article_tokenizer(clean_article_div)
+
+			#Confirm invariants
+			if not Helpers.training_invariants_met(lst,list_len,
+				clean_article_div,token_dic,valid_categories):
+				if (debug): print "Error: Skipping " + filename 
+				continue
+
+			c = 0 
+			for child in clean_article_div.children:
+				b_dic = NaiveBayes.train(token_dic[child],valid_categories[lst[c]], b_dic)
+				c += 1 
+
+			i +=1 
+
+	
+	Helpers.pickle_data(b_dic, bdic_file)
+	print "Done.\n"
+	print "Loaded ", str(i), " documents into b_dic. Training complete."
+
+	return b_dic 

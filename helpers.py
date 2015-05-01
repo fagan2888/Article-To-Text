@@ -3,7 +3,8 @@
 # CS51 Final Project 2015 
 # Nathaniel Burbank 
 # 
-# Helper module 
+# Helper Module  
+#
 
 import urlparse
 import codecs
@@ -12,7 +13,6 @@ import sys
 import re 
 
 debug = False 
-
 
 def clear_screen():
 	# Clear's terminal screen 
@@ -26,8 +26,10 @@ def unique (token_list):
 		
 
 def stem(word):
-# Super simple word stemmer, that removes common English suffixes. 
-# Obviously not perfect and could be (vastly!) improved, but that is out scope for now. 
+	'''
+	Super simple english word stemmer, that removes common English suffixes. 
+	Obviously not perfect and could be (vastly!) improved, but that is out scope for now. 
+	''' 
 	for suffix in ['ing','ly','ed','ious','ies','ive','es',"'s",'ment']:
 		if word.endswith(suffix):
 			return word[:-len(suffix)]
@@ -75,6 +77,12 @@ def print_div (article_div):
 			print child
 		i += 1 
 
+def get_classes(tag):
+	classes = []
+	if 'class' in tag.attrs: 
+		for c in tag.attrs['class']:
+			classes.append("[" + c + "]")
+	return classes 
 
 def print_progress_bar(width, i):
 	sys.stdout.write('[')
