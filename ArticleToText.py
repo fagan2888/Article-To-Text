@@ -14,7 +14,7 @@ import codecs
 import sys 
 import re 
 
-# External Libraries 
+# External third party libraries 
 from bs4 import BeautifulSoup, NavigableString, Comment
 import html2text
 
