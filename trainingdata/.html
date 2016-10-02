@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<!--[if lt IE 10]>      <html class="no-js lt-ie10 no-support" lang="en-US" itemscope itemtype="http://schema.org/Article"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" itemscope="" itemtype="http://schema.org/Article" lang="en-US">
+ <!--<![endif]-->
+ <head>
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+  <meta charset="utf-8">
+   <script type="text/javascript">
+    (window.NREUM||(NREUM={})).loader_config={xpid:"XAcAVFdRGwICUlNRDgYC"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(t){function e(e,n,a){t&&t(e,n,a),a||(a={});for(var c=s(e),f=c.length,u=i(a,o,r),d=0;f>d;d++)c[d].apply(u,n);return u}function a(t,e){f[t]=s(t).concat(e)}function s(t){return f[t]||[]}function c(){return n(e)}var f={};return{on:a,emit:e,create:c,listeners:s,_events:f}}function r(){return{}}var o="nr@context",i=t("gos");e.exports=n()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],3:[function(t){function e(t){try{i.console&&console.log(t)}catch(e){}}var n,r=t("ee"),o=t(1),i={};try{n=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(i.console=!0,-1!==n.indexOf("dev")&&(i.dev=!0),-1!==n.indexOf("nr_dev")&&(i.nrDev=!0))}catch(a){}i.nrDev&&r.on("internal-error",function(t){e(t.stack)}),i.dev&&r.on("fn-err",function(t,n,r){e(r.stack)}),i.dev&&(e("NR AGENT IN DEVELOPMENT MODE"),e("flags: "+o(i,function(t){return t}).join(", ")))},{1:23,ee:"QJf3ax"}],4:[function(t){function e(t,e,n,i,s){try{c?c-=1:r("err",[s||new UncaughtException(t,e,n)])}catch(f){try{r("ierr",[f,(new Date).getTime(),!0])}catch(u){}}return"function"==typeof a?a.apply(this,o(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function n(t){r("err",[t,(new Date).getTime()])}var r=t("handle"),o=t(6),i=t("ee"),a=window.onerror,s=!1,c=0;t("loader").features.err=!0,t(5),window.onerror=e;try{throw new Error}catch(f){"stack"in f&&(t(1),t(2),"addEventListener"in window&&t(3),window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)&&t(4),s=!0)}i.on("fn-start",function(){s&&(c+=1)}),i.on("fn-err",function(t,e,r){s&&(this.thrown=!0,n(r))}),i.on("fn-end",function(){s&&!this.thrown&&c>0&&(c-=1)}),i.on("internal-error",function(t){r("ierr",[t,(new Date).getTime(),!0])})},{1:10,2:9,3:7,4:11,5:3,6:24,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],5:[function(t){t("loader").features.ins=!0},{loader:"G9z0Bl"}],6:[function(t){function e(){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var n=t("ee"),r=t("handle"),o=t(1),i=t(2);t("loader").features.stn=!0,t(3),n.on("fn-start",function(t){var e=t[0];e instanceof Event&&(this.bstStart=Date.now())}),n.on("fn-end",function(t,e){var n=t[0];n instanceof Event&&r("bst",[n,e,this.bstStart,Date.now()])}),o.on("fn-start",function(t,e,n){this.bstStart=Date.now(),this.bstType=n}),o.on("fn-end",function(t,e){r("bstTimer",[e,this.bstStart,Date.now(),this.bstType])}),i.on("fn-start",function(){this.bstStart=Date.now()}),i.on("fn-end",function(t,e){r("bstTimer",[e,this.bstStart,Date.now(),"requestAnimationFrame"])}),n.on("pushState-start",function(){this.time=Date.now(),this.startPath=location.pathname+location.hash}),n.on("pushState-end",function(){r("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),"addEventListener"in window.performance&&(window.performance.addEventListener("webkitresourcetimingbufferfull",function(){r("bstResource",[window.performance.getEntriesByType("resource")]),window.performance.webkitClearResourceTimings()},!1),window.performance.addEventListener("resourcetimingbufferfull",function(){r("bstResource",[window.performance.getEntriesByType("resource")]),window.performance.clearResourceTimings()},!1)),document.addEventListener("scroll",e,!1),document.addEventListener("keypress",e,!1),document.addEventListener("click",e,!1)}},{1:10,2:9,3:8,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],7:[function(t,e){function n(t){i.inPlace(t,["addEventListener","removeEventListener"],"-",r)}function r(t){return t[1]}var o=(t(1),t("ee").create()),i=t(2)(o),a=t("gos");if(e.exports=o,n(window),"getPrototypeOf"in Object){for(var s=document;s&&!s.hasOwnProperty("addEventListener");)s=Object.getPrototypeOf(s);s&&n(s);for(var c=XMLHttpRequest.prototype;c&&!c.hasOwnProperty("addEventListener");)c=Object.getPrototypeOf(c);c&&n(c)}else XMLHttpRequest.prototype.hasOwnProperty("addEventListener")&&n(XMLHttpRequest.prototype);o.on("addEventListener-start",function(t){if(t[1]){var e=t[1];"function"==typeof e?this.wrapped=t[1]=a(e,"nr@wrapped",function(){return i(e,"fn-",null,e.name||"anonymous")}):"function"==typeof e.handleEvent&&i.inPlace(e,["handleEvent"],"fn-")}}),o.on("removeEventListener-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{1:24,2:25,ee:"QJf3ax",gos:"7eSDFh"}],8:[function(t,e){var n=(t(2),t("ee").create()),r=t(1)(n);e.exports=n,r.inPlace(window.history,["pushState"],"-")},{1:25,2:24,ee:"QJf3ax"}],9:[function(t,e){var n=(t(2),t("ee").create()),r=t(1)(n);e.exports=n,r.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),n.on("raf-start",function(t){t[0]=r(t[0],"fn-")})},{1:25,2:24,ee:"QJf3ax"}],10:[function(t,e){function n(t,e,n){t[0]=o(t[0],"fn-",null,n)}var r=(t(2),t("ee").create()),o=t(1)(r);e.exports=r,o.inPlace(window,["setTimeout","setInterval","setImmediate"],"setTimer-"),r.on("setTimer-start",n)},{1:25,2:24,ee:"QJf3ax"}],11:[function(t,e){function n(){f.inPlace(this,p,"fn-")}function r(t,e){f.inPlace(e,["onreadystatechange"],"fn-")}function o(t,e){return e}function i(t,e){for(var n in t)e[n]=t[n];return e}var a=t("ee").create(),s=t(1),c=t(2),f=c(a),u=c(s),d=window.XMLHttpRequest,p=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"];e.exports=a,window.XMLHttpRequest=function(t){var e=new d(t);try{a.emit("new-xhr",[],e),u.inPlace(e,["addEventListener","removeEventListener"],"-",o),e.addEventListener("readystatechange",n,!1)}catch(r){try{a.emit("internal-error",[r])}catch(i){}}return e},i(d,XMLHttpRequest),XMLHttpRequest.prototype=d.prototype,f.inPlace(XMLHttpRequest.prototype,["open","send"],"-xhr-",o),a.on("send-xhr-start",r),a.on("open-xhr-start",r)},{1:7,2:25,ee:"QJf3ax"}],12:[function(t){function e(t){var e=this.params,r=this.metrics;if(!this.ended){this.ended=!0;for(var i=0;c>i;i++)t.removeEventListener(s[i],this.listener,!1);if(!e.aborted){if(r.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var a=t.responseType,f="arraybuffer"===a||"blob"===a||"json"===a?t.response:t.responseText,u=n(f);if(u&&(r.rxSize=u),this.sameOrigin){var d=t.getResponseHeader("X-NewRelic-App-Data");d&&(e.cat=d.split(", ").pop())}}else e.status=0;r.cbTime=this.cbTime,o("xhr",[e,r,this.startTime])}}}function n(t){if("string"==typeof t&&t.length)return t.length;if("object"!=typeof t)return void 0;if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if("undefined"!=typeof FormData&&t instanceof FormData)return void 0;try{return JSON.stringify(t).length}catch(e){return void 0}}function r(t,e){var n=i(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}if(window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)){t("loader").features.xhr=!0;var o=t("handle"),i=t(2),a=t("ee"),s=["load","error","abort","timeout"],c=s.length,f=t(1);t(4),t(3),a.on("new-xhr",function(){this.totalCbs=0,this.called=0,this.cbTime=0,this.end=e,this.ended=!1,this.xhrGuids={}}),a.on("open-xhr-start",function(t){this.params={method:t[0]},r(this,t[1]),this.metrics={}}),a.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),a.on("send-xhr-start",function(t,e){var r=this.metrics,o=t[0],i=this;if(r&&o){var f=n(o);f&&(r.txSize=f)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{a.emit("internal-error",[n])}catch(r){}}};for(var u=0;c>u;u++)e.addEventListener(s[u],this.listener,!1)}),a.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),a.on("xhr-load-added",function(t,e){var n=""+f(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),a.on("xhr-load-removed",function(t,e){var n=""+f(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),a.on("addEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-added",[t[1],t[2]],e)}),a.on("removeEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-removed",[t[1],t[2]],e)}),a.on("fn-start",function(t,e,n){e instanceof XMLHttpRequest&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),a.on("fn-end",function(t,e){this.xhrCbStart&&a.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{1:"XL7HBI",2:13,3:11,4:7,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],13:[function(t,e){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");return!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname),r.sameOrigin=!e.hostname||e.hostname===document.domain&&e.port===n.port&&e.protocol===n.protocol,r}},{}],14:[function(t,e){function n(t){return function(){r(t,[(new Date).getTime()].concat(i(arguments)))}}var r=t("handle"),o=t(1),i=t(2);"undefined"==typeof window.newrelic&&(newrelic=window.NREUM);var a=["setPageViewName","addPageAction","setCustomAttribute","finished","addToTrace","inlineHit","noticeError"];o(a,function(t,e){window.NREUM[e]=n("api-"+e)}),e.exports=window.NREUM},{1:23,2:24,handle:"D5DuLP"}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):(o[t]||(o[t]=[]),void o[t].push(e))}var r=t("ee").create(),o={};e.exports=n,n.ee=r,r.q=o},{ee:"QJf3ax"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],G9z0Bl:[function(t,e){function n(){var t=p.info=NREUM.info,e=f.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){s(d,function(e,n){e in t||(t[e]=n)});var n="https"===u.split(":")[0]||t.sslForHttp;p.proto=n?"https://":"http://",a("mark",["onload",i()]);var r=f.createElement("script");r.src=p.proto+t.agent,e.parentNode.insertBefore(r,e)}}function r(){"complete"===f.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),s=t(1),c=(t(2),window),f=c.document,u=(""+location).split("?")[0],d={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-632.min.js"},p=e.exports={offset:i(),origin:u,features:{}};f.addEventListener?(f.addEventListener("DOMContentLoaded",o,!1),c.addEventListener("load",n,!1)):(f.attachEvent("onreadystatechange",r),c.attachEvent("onload",n)),a("mark",["firstbyte",i()])},{1:23,2:14,handle:"D5DuLP"}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],23:[function(t,e){function n(t,e){var n=[],o="",i=0;for(o in t)r.call(t,o)&&(n[i]=e(o,t[o]),i+=1);return n}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],24:[function(t,e){function n(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=n},{}],25:[function(t,e){function n(t){return!(t&&"function"==typeof t&&t.apply&&!t[i])}var r=t("ee"),o=t(1),i="nr@wrapper",a=Object.prototype.hasOwnProperty;e.exports=function(t){function e(t,e,r,a){function nrWrapper(){var n,i,s,f;try{i=this,n=o(arguments),s=r&&r(n,i)||{}}catch(d){u([d,"",[n,i,a],s])}c(e+"start",[n,i,a],s);try{return f=t.apply(i,n)}catch(p){throw c(e+"err",[n,i,p],s),p}finally{c(e+"end",[n,i,f],s)}}return n(t)?t:(e||(e=""),nrWrapper[i]=!0,f(t,nrWrapper),nrWrapper)}function s(t,r,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<r.length;c++)s=r[c],a=t[s],n(a)||(t[s]=e(a,f?s+o:o,i,s))}function c(e,n,r){try{t.emit(e,n,r)}catch(o){u([o,e,n,r])}}function f(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){u([r])}for(var o in t)a.call(t,o)&&(e[o]=t[o]);return e}function u(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=r),e.inPlace=s,e.flag=i,e}},{1:24,ee:"QJf3ax"}]},{},["G9z0Bl",4,12,6,5]);
+   </script>
+   <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport"/>
+   <title>
+    Forest Service may blow up frozen cows in cabin
+     | The Seattle Times
+   </title>
+   <link href="http://www.seattletimes.com/nation-world/forest-service-may-blow-up-frozen-cows-in-cabin/" rel="canonical"/>
+   <meta content="It may take explosives to dislodge a group of cows that wandered into an old ranger cabin high in the Rocky Mountains, then died and froze solid when they couldn't get out." name="description"/>
+   <!-- Google+ -->
+   <meta content="Forest Service may blow up frozen cows in cabin
+    " itemprop="name">
+    <meta content="It may take explosives to dislodge a group of cows that wandered into an old ranger cabin high in the Rocky Mountains, then died and froze solid when they couldn't get out." itemprop="description">
+     <meta content="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-780x0.jpg" itemprop="image">
+      <link href="https://plus.google.com/+Seattletimesplus" rel="publisher"/>
+      <!-- Twitter Card -->
+      <meta content="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-780x0.jpg" name="twitter:card">
+       <meta content="@seattletimes" name="twitter:site">
+        <meta content="Forest Service may blow up frozen cows in cabin
+    " name="twitter:title">
+         <meta content="It may take explosives to dislodge a group of cows that wandered into an old ranger cabin high in the Rocky Mountains, then died and froze solid when they couldn't get out." name="twitter:description">
+          <!-- Open Graph -->
+          <meta content="Forest Service may blow up frozen cows in cabin
+    " property="og:title"/>
+          <meta content="article" property="og:type"/>
+          <meta content="http://www.seattletimes.com/nation-world/forest-service-may-blow-up-frozen-cows-in-cabin/" property="og:url"/>
+          <meta content="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-1560x0.jpg" property="og:image"/>
+          <meta content="It may take explosives to dislodge a group of cows that wandered into an old ranger cabin high in the Rocky Mountains, then died and froze solid when they couldn't get out." property="og:description"/>
+          <meta content="The Seattle Times" property="og:site_name"/>
+          <meta content="2012-04-18 00:09:00" property="article:published_time"/>
+          <meta content="2012-04-21 20:56:22" property="article:modified_time"/>
+          <meta content="Nation &amp; World" property="article:section"/>
+          <meta content="" property="article:tag"/>
+          <meta content="aerial search" property="article:tag"/>
+          <meta content="air force academy" property="article:tag"/>
+          <meta content="aspen daily news" property="article:tag"/>
+          <meta content="brian porter" property="article:tag"/>
+          <meta content="Colorado" property="article:tag"/>
+          <meta content="gunnison national forest" property="article:tag"/>
+          <meta content="http://www.aspendailynews.com" property="article:tag"/>
+          <meta content="michael carroll" property="article:tag"/>
+          <meta content="minimal tool" property="article:tag"/>
+          <meta content="rocky mountains" property="article:tag"/>
+          <meta content="steve segin" property="article:tag"/>
+          <meta content="wilderness society" property="article:tag"/>
+          <meta content="Nation &amp; World" name="news_keywords">
+           <!-- Facebook -->
+           <meta content="225286600856790" property="fb:app_id"/>
+           <!-- Bing -->
+           <meta content="29FBBD36D14799A9FDE7843BF1E1CDD7" name="msvalidate.01"/>
+           <link href="http://gmpg.org/xfn/11" rel="profile">
+            <script>
+             // Header scripts that can't otherwise be placed lower in the page. Keep as minimal as possible.
+
+    // Sets 'js' on html element and removes 'no-js' if present (here to prevent flashing)
+    (function(){
+    document.documentElement.className = document.documentElement.className.replace(/(^|\s)no-js(\s|$)/, '$1$2') + (' js ');
+    })();
+
+    // Chartbeat
+    // Sets a start time to compare to an end time in the chartbeat.js
+    var _sf_startpt=(new Date()).getTime();
+
+    // Load TypeKit webfonts
+    (function(d) {
+    var config = {
+      kitId: 'rvq5yyp',
+      scriptTimeout: 3000,
+      active: function() {
+        if (window.events) {
+          window.events.trigger('fonts:loaded');
+        }
+      }
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+    })(document);
+            </script>
+            <link href="http://www.seattletimes.com/feed/" rel="alternate" title="The Seattle Times » Feed" type="application/rss+xml"/>
+            <link href="http://www.seattletimes.com/comments/feed/" rel="alternate" title="The Seattle Times » Comments Feed" type="application/rss+xml"/>
+            <script type="text/javascript">
+             dataLayer = [{"contentType":"story","post_id":5750523,"author":"STEVEN K. PAULSON","publishdate":"2012-04-17 17:09:00","modifieddate":"2012-04-21 13:56:22","title":"Forest Service may blow up frozen cows in cabin\n    ","tags":"aerial search, air force academy, aspen daily news, brian porter, Colorado, gunnison national forest, http:\/\/www.aspendailynews.com, michael carroll, minimal tool, rocky mountains, steve segin, wilderness society","categories":"","wordcount":474,"age":1106,"section_tier1":"nation-world","othersections":"environment","wordgroup":400}];
+            </script>
+            <link href="http://www.seattletimes.com/wp-content/themes/st_refresh/css/styles.min.css?ver=1429210997" id="st-style-css" media="all" rel="stylesheet" type="text/css"/>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript">
+            </script>
+            <script src="http://www.seattletimes.com/wp-content/themes/st_refresh/js/vendor/mobile-detect.min.js?ver=1424216511" type="text/javascript">
+            </script>
+            <script src="http://www.seattletimes.com/wp-content/themes/st_refresh/js/vendor/mobile.js?ver=1425064672" type="text/javascript">
+            </script>
+            <script src="http://www.seattletimes.com/wp-content/themes/st_refresh/js/ads/dfp.gpt.logger.override.js?ver=0.0.1" type="text/javascript">
+            </script>
+            <link href="http://www.seattletimes.com/xmlrpc.php?rsd" rel="EditURI" title="RSD" type="application/rsd+xml"/>
+            <link href="http://www.seattletimes.com/wp-includes/wlwmanifest.xml" rel="wlwmanifest" type="application/wlwmanifest+xml"/>
+            <link href="http://www.seattletimes.com/sports/mariners/rewind-live-chat-with-former-mariner-ruppert-jones/" rel="prev" title="Rewind: Live chat with former Mariner Ruppert Jones"/>
+            <link href="http://www.seattletimes.com/business/yahoos-1q-results-show-progress-under-new-ceo/" rel="next" title="Yahoo’s 1Q results show progress under new CEO"/>
+            <link href="http://www.seattletimes.com/nation-world/forest-service-may-blow-up-frozen-cows-in-cabin/" rel="canonical"/>
+            <link href="http://www.seattletimes.com/?p=5750523" rel="shortlink"/>
+            <link href="http://www.seattletimes.com/wp-json" rel="https://github.com/WP-API/WP-API"/>
+            <script type="text/javascript">
+             var dfp_ad_slots = {};
+		var googletag = googletag || {};
+		googletag.cmd = googletag.cmd || [];
+		(function() {
+		var gads = document.createElement('script');
+		gads.async = true;
+		gads.type = 'text/javascript';
+		var useSSL = 'https:' == document.location.protocol;
+		gads.src = (useSSL ? 'https:' : 'http:') +
+		'//www.googletagservices.com/tag/js/gpt.js';
+		var node = document.getElementsByTagName('script')[0];
+		node.parentNode.insertBefore(gads, node);
+		})();
+            </script>
+            <script type="text/javascript">
+             document.addEventListener("DOMContentLoaded", function() {
+
+			googletag.cmd.push(function() {
+				var dataLayerMap = {
+					"contentType": {
+						"key": "type",
+						"type": "string",
+					},
+					"post_id": {
+						"key": "id",
+						"type": "string",
+					},
+					"categories": {
+						"key": "category",
+						"type": "array",
+					},
+					"tags": {
+						"key": "tag",
+						"type": "array",
+					},
+					"author": {
+						"key": "author",
+						"type": "array",
+					},
+					"app": {
+						"key": "app",
+						"type": "string",
+					}
+				};
+				var mappingtop = googletag.sizeMapping().addSize([1263,1],[[728,90],[970,90],[970,40],[960,40],[970,250]]).addSize([1020,1],[[728,90],[970,90],[970,40],[960,40],[970,250]]).addSize([768,1],[[728,90]]).addSize([0,0],[[320,50],[300,50]]).build();
+var mappingright = googletag.sizeMapping().addSize([1263,1],[[300,250],[300,600],[300,1050]]).addSize([1020,1],[[300,250],[300,600]]).addSize([768,1],[[300,250],[300,600]]).addSize([0,0],[[300,250],[320,50],[300,50]]).build();
+var mappingpromoleft = googletag.sizeMapping().addSize([1263,1],[[120,240]]).addSize([1020,1],[[120,240]]).addSize([768,1],[[120,240]]).addSize([0,0],[[300,120]]).build();
+var mappingmiddle = googletag.sizeMapping().addSize([1263,1],[[120,60]]).addSize([1020,1],[[120,60]]).addSize([768,1],[]).addSize([0,0],[]).build();
+var mappingbottom = googletag.sizeMapping().addSize([1263,1],[[728,90]]).addSize([1020,1],[[728,90]]).addSize([768,1],[[728,90]]).addSize([0,0],[]).build();
+var mappingwallpaper = googletag.sizeMapping().addSize([1263,1],[[1,1]]).addSize([1020,1],[]).addSize([768,1],[]).addSize([0,0],[]).build();
+var mappinginter = googletag.sizeMapping().addSize([1263,1],[[1,1]]).addSize([1020,1],[[1,1]]).addSize([768,1],[[1,1]]).addSize([0,0],[]).build();
+var mappingright1 = googletag.sizeMapping().addSize([1263,1],[[300,250]]).addSize([1020,1],[[300,250]]).addSize([768,1],[[300,250]]).addSize([0,0],[[300,250],[320,50],[300,50]]).build();
+var mappingright2 = googletag.sizeMapping().addSize([1263,1],[[300,250]]).addSize([1020,1],[[300,250]]).addSize([768,1],[[300,250]]).addSize([0,0],[]).build();
+dfp_ad_slots['top'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[728,90],'div-gpt-ad-top').defineSizeMapping(mappingtop).setTargeting('pos', 'top').addService(googletag.pubads());
+dfp_ad_slots['right'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[300,600],'div-gpt-ad-right').defineSizeMapping(mappingright).setTargeting('pos', 'right').addService(googletag.pubads());
+dfp_ad_slots['promo-left'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[120,240],'div-gpt-ad-promo-left').defineSizeMapping(mappingpromoleft).setTargeting('pos', 'promo-left').addService(googletag.pubads());
+dfp_ad_slots['middle'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[120,60],'div-gpt-ad-middle').defineSizeMapping(mappingmiddle).setTargeting('pos', 'middle').addService(googletag.pubads());
+dfp_ad_slots['bottom'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[728,90],'div-gpt-ad-bottom').defineSizeMapping(mappingbottom).setTargeting('pos', 'bottom').addService(googletag.pubads());
+dfp_ad_slots['wallpaper'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[1,1],'div-gpt-ad-wallpaper').defineSizeMapping(mappingwallpaper).setTargeting('pos', 'wallpaper').addService(googletag.pubads());
+dfp_ad_slots['inter'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[1,1],'div-gpt-ad-inter').defineSizeMapping(mappinginter).setTargeting('pos', 'inter').addService(googletag.pubads());
+dfp_ad_slots['right1'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[300,250],'div-gpt-ad-right1').defineSizeMapping(mappingright1).setTargeting('pos', 'right1').addService(googletag.pubads());
+dfp_ad_slots['right2'] = googletag.defineSlot('/81279359/seattletimes.com/nation-world',[300,250],'div-gpt-ad-right2').defineSizeMapping(mappingright2).setTargeting('pos', 'right2').addService(googletag.pubads());
+
+				var dataKeys = Object.keys( dataLayerMap );
+				for ( var i = 0; i < dataKeys.length; i++ ) {
+					if ( null != dataLayer[0][ dataKeys[ i ] ] && undefined !== dataLayer[0][ dataKeys[ i ] ] ) {
+						if ( 'array' == dataLayerMap[ dataKeys[ i ] ]['type'] ) {
+							var value = dataLayer[0][ dataKeys[ i ] ].split( ', ' );
+						} else {
+							var value = dataLayer[0][ dataKeys[ i ] ].toString();
+						}
+						googletag.pubads().setTargeting( dataLayerMap[ dataKeys[ i ] ]['key'], value );
+					}
+				}
+
+				googletag.pubads().setTargeting('environment', 'prod');
+
+				// tell views/ads.js that setup is complete, and wait for subscriber targeting before sending ad request
+				events.trigger('dfp-api:adSetupCompleted');
+
+			});
+		});
+            </script>
+           </link>
+          </meta>
+         </meta>
+        </meta>
+       </meta>
+      </meta>
+     </meta>
+    </meta>
+   </meta>
+  </meta>
+ </head>
+ <body class="single single-post postid-5750523 single-format-standard forest-service-may-blow-up-frozen-cows-in-cabin">
+  <!-- Google Tag Manager -->
+  <noscript>
+   <iframe height="0" src="http://www.googletagmanager.com/ns.html?id=GTM-KDZ92J" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <script>
+   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-KDZ92J');
+  </script>
+  <a class="skip-link screen-reader-text" href="#content">
+   Skip to content
+  </a>
+  <div class="site container" id="container">
+   <header class="global-header standard">
+    <div class="global-header-top">
+     <div class="wrapper">
+      <div class="main-nav">
+       <div class="main-nav-header">
+        <div class="main-nav-icon">
+         <span class="icon-bar">
+         </span>
+         <span class="icon-bar">
+         </span>
+         <span class="icon-bar">
+         </span>
+        </div>
+        <a class="header-wordmark" href="http://www.seattletimes.com">
+        </a>
+       </div>
+       <nav class="popup main-nav-body">
+        <div class="main-nav-header highlighted">
+         <div class="main-nav-icon">
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+         </div>
+         <a class="header-wordmark white" href="http://www.seattletimes.com">
+         </a>
+        </div>
+        <div class="main-nav-container">
+         <ul class="main-nav-list primary" id="menu-hamburger-tier-1">
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-43895" id="menu-item-43895">
+           <a href="/seattle-news/">
+            Local News
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-41627" id="menu-item-41627">
+           <a href="/entertainment/">
+            Entertainment
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-41625" id="menu-item-41625">
+           <a href="/business/">
+            Business &amp; Tech
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-41628" id="menu-item-41628">
+           <a href="/life/">
+            Life
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-41626" id="menu-item-41626">
+           <a href="/sports/">
+            Sports
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-41632" id="menu-item-41632">
+           <a href="/opinion/">
+            Opinion
+           </a>
+          </li>
+         </ul>
+         <div class="main-nav-separator">
+          Shortcuts
+         </div>
+         <ul class="main-nav-list" id="menu-hamburger-short-cuts">
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-42912" id="menu-item-42912">
+           <a href="/nation-world/">
+            Nation &amp; World
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9484523" id="menu-item-9484523">
+           <a href="http://old.seattletimes.com/comicsgames/">
+            Comics &amp; Games
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-42914" id="menu-item-42914">
+           <a href="/pacific-nw-magazine/">
+            Pacific NW Magazine
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9526937" id="menu-item-9526937">
+           <a href="http://www.seattletimes.com/obits/">
+            Obituaries
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-42915" id="menu-item-42915">
+           <a href="/life/travel/">
+            Travel
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42965" id="menu-item-42965">
+           <a href="http://jobs.seattletimes.com">
+            Jobs
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-9588250" id="menu-item-9588250">
+           <a href="/life/outdoors/">
+            Outdoors
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9588251" id="menu-item-9588251">
+           <a href="/shopping">
+            Shopping
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-9483830" id="menu-item-9483830">
+           <a href="/photo-video/">
+            Photo &amp; Video
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42966" id="menu-item-42966">
+           <a href="http://autos.seattletimes.com">
+            Autos
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-42964" id="menu-item-42964">
+           <a href="http://www.seattletimes.com/contact/">
+            Corrections
+           </a>
+          </li>
+          <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42967" id="menu-item-42967">
+           <a href="http://homes.seattletimes.com">
+            Homes
+           </a>
+          </li>
+         </ul>
+         <div class="main-nav-separator">
+         </div>
+         <ul class="hamburger-login-nav main-nav-list">
+         </ul>
+        </div>
+       </nav>
+      </div>
+      <nav class="header-utils">
+       <ul>
+        <li>
+         <a class="login st-return" href="https://secure.seattletimes.com/accountcenter/">
+          Login
+         </a>
+        </li>
+        <li>
+         <a class="subscribe st-return" href="https://subscriberservices.seattletimes.com/dsssubscribe.aspx?pid=266&amp;pc=true&amp;premium=y&amp;product=website&amp;CMPID=6326&amp;icn=site-header&amp;ici=subscribe&amp;return=https://secure.seattletimes.com/accountcenter/postsubscribelanding" id="header-subscribe-link">
+          Subscribe
+         </a>
+        </li>
+       </ul>
+      </nav>
+      <a class="header-search-icon global-search-button" href="#">
+       <i class="icon-search large">
+       </i>
+      </a>
+     </div>
+     <div class="secondary-nav">
+      <a class="section-title" href="/nation-world/">
+       Nation &amp; World
+      </a>
+     </div>
+    </div>
+    <nav class="section-nav">
+     <div class="wrapper">
+      <ul class="menu" id="menu-section-nation-world-navbar">
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-section current-post-ancestor current-menu-parent current-post-parent menu-item-5522508" id="menu-item-5522508">
+        <a href="/nation-world/nation/">
+         Nation
+        </a>
+       </li>
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-43689" id="menu-item-43689">
+        <a href="/nation-world/world/">
+         World
+        </a>
+       </li>
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-43688" id="menu-item-43688">
+        <a href="/nation-world/oddities/">
+         Oddities
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="show-mobile">
+      <div class="section-nav-popup">
+       <div class="section-nav-popup-header">
+        <span class="section-nav-button">
+         Nation &amp; World
+        </span>
+        <a class="section-nav-button close" href="#">
+         <i class="icon-x">
+         </i>
+        </a>
+       </div>
+       <div class="section-nav-popup-container">
+        <ul class="menu" id="menu-section-nation-world-navbar">
+         <li class="menu-item menu-item-type-taxonomy menu-item-object-section current-post-ancestor current-menu-parent current-post-parent menu-item-5522508" id="menu-item-5522508">
+          <a href="/nation-world/nation/">
+           Nation
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-43689" id="menu-item-43689">
+          <a href="/nation-world/world/">
+           World
+          </a>
+         </li>
+         <li class="menu-item menu-item-type-taxonomy menu-item-object-section menu-item-43688" id="menu-item-43688">
+          <a href="/nation-world/oddities/">
+           Oddities
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </nav>
+    <div class="ad">
+     <div class="wrapper" id="ad-flex-top">
+      <div class="dfp-ad dfp-top" id="div-gpt-ad-top">
+       <div class="ad-wrapper">
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="secondary-nav-mobile">
+     <div class="wrapper">
+      <a class="section-title section-nav-button" href="/nation-world/">
+       Nation &amp; World
+      </a>
+      <nav class="header-utils">
+       <ul>
+        <li>
+         <a class="login st-return" href="https://secure.seattletimes.com/accountcenter/">
+          Login
+         </a>
+        </li>
+        <li>
+         <a class="subscribe st-return" href="/subscribe/offers/" id="header-subscribe-link">
+          Subscribe
+         </a>
+        </li>
+       </ul>
+      </nav>
+     </div>
+    </div>
+   </header>
+   <section class="content-well" id="content">
+    <div class="wrapper">
+     <article class="post-5750523 post type-post status-publish format-standard hentry tag-aerial-search tag-air-force-academy tag-aspen-daily-news tag-brian-porter tag-colorado tag-gunnison-national-forest tag-http-www-aspendailynews-com tag-michael-carroll tag-minimal-tool tag-rocky-mountains tag-steve-segin tag-wilderness-society" id="post-5750523">
+      <header class="article-header ">
+       <ul class="article-slug">
+        <li>
+         <a href="/seattle-news/environment/" rel="tag">
+          Environment
+         </a>
+        </li>
+        <li>
+         <a href="/nation-world/" rel="tag">
+          Nation &amp; World
+         </a>
+        </li>
+       </ul>
+       <h1 class="article-title p-name">
+        Forest Service may blow up frozen cows in cabin
+       </h1>
+       <div class="article-share title" data-utm="article_title">
+        <a class="social-share">
+         <i class="icon-facebook large">
+         </i>
+        </a>
+        <a class="social-share">
+         <i class="icon-mail large">
+         </i>
+        </a>
+        <a class="social-share">
+         <i class="icon-twitter large">
+         </i>
+        </a>
+       </div>
+       <div class="article-dateline">
+        <time class="line dt-published" datetime="2012-04-18 00:09:00">
+         Originally published April 17, 2012 at 5:09 pm
+        </time>
+        <time class="line update dt-updated" datetime="2012-04-21 13:56:22">
+         Updated April 21, 2012 at 1:56 pm
+        </time>
+       </div>
+      </header>
+      <!-- .entry-header -->
+      <div class="featured-media">
+       <div class="image-single-wrapper image-12592 ">
+        <figure class="article-figure align-none " id="image-12592">
+         <picture>
+          <noscript>
+           <img src="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-780x0.jpg"/>
+          </noscript>
+          <img alt="Conundrum Creek Cabin, in the White River National Forest, near Aspen, Colo., where as many as six cows froze to death." data-src-large="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-1560x0.jpg" data-src-medium="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-1020x0.jpg" data-src-small="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-780x0.jpg" data-src-x-large="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-2040x0.jpg" data-src-x-small="http://static.seattletimes.com/wp-content/uploads/2012/04/2018015356-300x0.jpg"/>
+         </picture>
+         <figcaption class="article-figure-caption">
+          <span class="caption">
+           Conundrum Creek Cabin, in the White River National Forest, near Aspen, Colo., where as many as six cows froze to death.
+          </span>
+         </figcaption>
+         <span class="expand">
+          <i class="icon-expand">
+          </i>
+         </span>
+        </figure>
+       </div>
+      </div>
+      <div class="ad-placeholder-full ad right half-page" id="ad-right-top-full">
+      </div>
+      <div class="article-body e-content">
+       <p class="article-deck p-summary">
+        It may take explosives to dislodge a group of cows that wandered into an old ranger cabin high in the Rocky Mountains, then died and froze solid when they couldn't get out.
+       </p>
+       <div class="show-desktop section-sponsor-bar" id="ad-sponsor-bar">
+        <div class="dfp-ad dfp-middle" id="div-gpt-ad-middle">
+         <div class="ad-wrapper">
+         </div>
+        </div>
+       </div>
+       <div class="article-share vertical" data-utm="article_left">
+        <a class="social-share">
+         <i class="icon-facebook large">
+         </i>
+        </a>
+        <a class="social-share">
+         <i class="icon-mail large">
+         </i>
+        </a>
+        <a class="social-share">
+         <i class="icon-twitter large">
+         </i>
+        </a>
+       </div>
+       <div class="article-byline">
+        <div class="name">
+         By
+         <a class="p-author" href="/author/steven-k-paulson">
+          STEVEN K. PAULSON
+         </a>
+        </div>
+        <div class="title">
+         Associated Press
+        </div>
+       </div>
+       <div class="main-story-content" id="article-content">
+        <p>
+         It may take explosives to dislodge a group of cows that wandered into an old ranger cabin high in the Rocky Mountains, then died and froze solid when they couldn’t get out.
+        </p>
+        <p>
+         The carcasses were discovered by two Air Force Academy cadets when they snow-shoed up to the cabin in late March. Rangers believe the animals sought shelter during a snowstorm and got stuck and weren’t smart enough to find their way out.
+        </p>
+        <div class="marketing-placeholder-full article-subscribe" id="promo-left-full">
+        </div>
+        <p>
+         The cabin is located near the Conundrum Hot Springs, a nine-mile hike from the Aspen area in the Maroon Bells-Snowmass Wilderness area.
+        </p>
+        <div class="ad-placeholder-small-mobile ad medium-rect" id="ad-right-top-phone">
+        </div>
+        <p>
+         Michael Carroll, a spokesman for the Wilderness Society in Colorado, said cattle are often allowed to wander on federal wilderness lands as long as ranchers get a permit from the Forest Service, and sometimes the animals get separated from the herd.
+        </p>
+        <div class="most-read-container module article-aside story-list most-shared truncate">
+         <ul>
+          <h3>
+           Most Read Stories
+          </h3>
+          <li class="most-read-widget-item most-read-widget-item-1">
+           <a href="/seattle-news/man-arrested-for-carrying-golf-club-sues-city-seattle-police/">
+            Man arrested for carrying golf club sues city, Seattle cop
+           </a>
+          </li>
+          <li class="most-read-widget-item most-read-widget-item-2">
+           <a href="/seattle-news/anonymous-donor-pays-off-landslide-victims-360k-mortgage/">
+            Anonymous donor pays off landslide victim's $360K mortgage
+           </a>
+          </li>
+          <li class="most-read-widget-item most-read-widget-item-3">
+           <a href="/seattle-news/crime/school-staff-apprehends-a-possible-shooter-at-north-thurston-high/">
+            'Hero' teacher tackles shooter at North Thurston High School
+           </a>
+          </li>
+          <li class="most-read-widget-item most-read-widget-item-4">
+           <a href="/seattle-news/science/deep-part-of-cascadia-fault-so-slippery-sun-moon-trigger-tremors/">
+            Deep part of Cascadia fault so slippery sun, moon trigger tremors
+           </a>
+          </li>
+          <li class="most-read-widget-item most-read-widget-item-5">
+           <a href="/sports/uw-husky-basketball/jernard-jarreau-leaving-washington/">
+            Jernard Jarreau leaving Washington
+           </a>
+          </li>
+         </ul>
+         <a class="show-more-button">
+         </a>
+        </div>
+        <p>
+         The Forest Service said Tuesday the animals came from a herd of 29 cows that went missing last fall from the nearby Gunnison National Forest where the rancher had a permit. An aerial search failed to turn up any sign of the animals.
+        </p>
+        <p>
+         Forest Service spokesman Brian Porter said rangers saw about six cows inside the cabin, and several dead cows lying around the building.
+        </p>
+        <p>
+         “There is a lot of snow, and it’s hard to determine how many cows are there,” Porter said.
+        </p>
+        <p>
+         U.S. Forest Service spokesman Steve Segin said Tuesday they need to decide quickly how to get rid of the carcasses.
+        </p>
+        <p>
+         “Obviously, time is of the essence because we don’t want them defrosting,” Segin said.
+        </p>
+        <p>
+         Segin said officials are concerned about water contamination in the nearby hot springs if the cows start decomposing during the thaw.
+        </p>
+        <div class="tbd-ad-place-holder-full ad right medium-rect ad-inset" id="tbd-ad-position-1-full">
+        </div>
+        <p>
+         The options: use explosives to break up the cows, burn down the cabin, or using a helicopters or trucks to haul out the carcasses.
+        </p>
+        <div class="marketing-placeholder-small-mobile article-subscribe" id="promo-left-small-mobile">
+        </div>
+        <p>
+         But Segin said using helicopters is too expensive and rangers are worried about using trucks in a wilderness area, where the government bars permanent improvements and tries to preserve the natural habitat.
+        </p>
+        <p>
+         Carroll praised the Forest Service for trying to remove the animals while doing the least damage. He said burning down the cabin or packing out the carcasses are probably the best solutions.
+        </p>
+        <p>
+         “They need to use the minimal tool to get the job done. They don’t want to leave the land scarred,” he said.
+        </p>
+        <div class="tbd-ad-placeholder-small-mobile ad right medium-rect" id="tbd-ad-position-1-small-mobile">
+        </div>
+        <p>
+         Segin said the Forest Service occasionally uses explosives to destroy carcasses of animals that can’t be retrieved.
+        </p>
+        <p>
+         “We’ve used them as a means of disposal to remove dead horses, elk and other animals in areas where it’s impossible to get them out,” he said.
+        </p>
+        <div class="ad show-tablet show-desktop right medium-rect" id="tbd-ad-position-2">
+         <div class="dfp-ad dfp-right2" id="div-gpt-ad-right2">
+          <div class="ad-wrapper">
+          </div>
+         </div>
+        </div>
+        <p>
+         —
+        </p>
+        <div class="most-read-placeholder-small-mobile" id="most-read-small-mobile">
+        </div>
+        <p>
+         Information from: Aspen Daily News, http://www.aspendailynews.com
+        </p>
+       </div>
+       <div class="extended-byline">
+        <span class="name">
+         STEVEN K. PAULSON
+        </span>
+       </div>
+       <p class="article-share" data-utm="article_bottom">
+        <a class="social-share">
+         <i class="icon-facebook large">
+         </i>
+        </a>
+        <a class="social-share">
+         <i class="icon-mail large">
+         </i>
+        </a>
+        <a class="social-share">
+         <i class="icon-twitter large">
+         </i>
+        </a>
+       </p>
+      </div>
+      <!-- .article-body-->
+      <script data-lf-domain="seattletimes.fyre.co" src="http://zor.livefyre.com/wjs/v1.0/javascripts/CommentCount.js" type="text/javascript">
+      </script>
+      <a class="article-comments-bar" href="#comments" id="showcomments">
+       <i class="icon-chat">
+       </i>
+       View
+       <span class="comment-count">
+        Comments
+       </span>
+       <span class="livefyre-commentcount" data-lf-article-id="2017999538" data-lf-site-id="316317">
+       </span>
+      </a>
+      <div class="comments-container" id="livefyre-container">
+       <div class="fyre-disclaimer">
+        No personal attacks or insults, no hate speech, no profanity. Please keep the conversation civil and help us moderate this thread by reporting any abuse. See our
+        <a href="http://seattletimes.com/help">
+         Commenting FAQ
+        </a>
+        .
+       </div>
+       <div id="comments">
+       </div>
+       <div id="powered_by_livefyre_new">
+        <a href="http://livefyre.com" target="_blank">
+         Powered by Livefyre
+        </a>
+        <p>
+         The opinions expressed in reader comments are those of the author only, and do not reflect the opinions of The Seattle Times.
+        </p>
+       </div>
+      </div>
+      <nav class="navigation post-navigation" role="navigation">
+       <ul class="article-prev-next">
+        <li class="article-prev">
+         <a href="http://www.seattletimes.com/seattle-news/epa-wants-full-review-of-coal-export-project/" rel="prev">
+          <i class="icon-chevron-thin-left">
+          </i>
+          <div class="label">
+           Previous Story
+          </div>
+          <p>
+           EPA wants full review of coal export project
+          </p>
+         </a>
+        </li>
+        <li class="article-next">
+         <a href="http://www.seattletimes.com/news/photos-of-the-day-tuesday-april-17-2012/" rel="next">
+          <i class="icon-chevron-thin-right">
+          </i>
+          <div class="label">
+           Next Story
+          </div>
+          <p>
+           Photos of the Day | Tuesday, April 17, 2012
+          </p>
+         </a>
+        </li>
+       </ul>
+      </nav>
+      <!-- .navigation -->
+      <div class="river-group extra-items elsewhere four-col full-width-content" data-zone="Don't Miss" id="el-quads-above-fold-block-9462980-t">
+       <div class="extra-items-header">
+        <h2>
+         Don't Miss
+        </h2>
+       </div>
+       <div class="four-col-single first has-image">
+        <a href="http://www.seattletimes.com/entertainment/theater/little-bee-book-it-adaptation-shines-light-on-the-plight-of-refugees/" id="el-above-fold-block-9462980-9599874-i">
+         <noscript>
+          <img class="teaser" src="http://static.seattletimes.com/wp-content/uploads/2015/04/8481ea92-edcb-11e4-9ff3-3ddfc65c1003-300x192.jpg"/>
+         </noscript>
+         <img class="teaser lazy-loading" data-lazy-src="http://static.seattletimes.com/wp-content/uploads/2015/04/8481ea92-edcb-11e4-9ff3-3ddfc65c1003-300x192.jpg"/>
+        </a>
+        <div class="four-col-text">
+         <div class="eyebrow">
+          Theater
+         </div>
+         <h3>
+          <a href="http://www.seattletimes.com/entertainment/theater/little-bee-book-it-adaptation-shines-light-on-the-plight-of-refugees/" id="el-above-fold-block-9462980-9599874-t">
+           ‘Little Bee’: Book-It adaptation shines light on the plight of refugees
+          </a>
+         </h3>
+        </div>
+       </div>
+       <div class="four-col-single has-image">
+        <a href="http://www.seattletimes.com/opinion/editorials/lawmakers-time-to-meet-in-the-middle/" id="el-above-fold-block-9462980-9600230-i">
+         <noscript>
+          <img class="teaser" src="http://static.seattletimes.com/wp-content/uploads/2015/04/kellygraphicteaser-300x192.jpg"/>
+         </noscript>
+         <img class="teaser lazy-loading" data-lazy-src="http://static.seattletimes.com/wp-content/uploads/2015/04/kellygraphicteaser-300x192.jpg"/>
+        </a>
+        <div class="four-col-text">
+         <div class="eyebrow">
+          Editorial
+         </div>
+         <h3>
+          <a href="http://www.seattletimes.com/opinion/editorials/lawmakers-time-to-meet-in-the-middle/" id="el-above-fold-block-9462980-9600230-t">
+           Lawmakers, time to meet in the middle
+          </a>
+         </h3>
+        </div>
+       </div>
+       <div class="four-col-single has-image">
+        <a href="http://www.seattletimes.com/business/boeing-aerospace/airbus-pushes-density-over-luxury-to-fan-weak-a380-sales/" id="el-above-fold-block-9462980-9599039-i">
+         <noscript>
+          <img class="teaser" src="http://static.seattletimes.com/wp-content/uploads/2015/04/71a80ee4-ed2e-11e4-9769-6d77d47e6395-300x192.jpg"/>
+         </noscript>
+         <img class="teaser lazy-loading" data-lazy-src="http://static.seattletimes.com/wp-content/uploads/2015/04/71a80ee4-ed2e-11e4-9769-6d77d47e6395-300x192.jpg"/>
+        </a>
+        <div class="four-col-text">
+         <div class="eyebrow">
+          Aerospace
+         </div>
+         <h3>
+          <a href="http://www.seattletimes.com/business/boeing-aerospace/airbus-pushes-density-over-luxury-to-fan-weak-a380-sales/" id="el-above-fold-block-9462980-9599039-t">
+           Airbus pushes density over luxury to fan weak A380 sales
+          </a>
+         </h3>
+        </div>
+       </div>
+       <div class="four-col-single has-image">
+        <a href="http://www.seattletimes.com/sports/seahawks/jon-gruden-was-among-few-who-lauded-seahawks-pick-of-russell-wilson/" id="el-above-fold-block-9462980-9598808-i">
+         <noscript>
+          <img class="teaser" src="http://static.seattletimes.com/wp-content/uploads/2015/04/132705931MW079_Rose_Bowl_Ga-300x192.jpg"/>
+         </noscript>
+         <img class="teaser lazy-loading" data-lazy-src="http://static.seattletimes.com/wp-content/uploads/2015/04/132705931MW079_Rose_Bowl_Ga-300x192.jpg"/>
+        </a>
+        <div class="four-col-text">
+         <div class="eyebrow">
+          Sports
+         </div>
+         <h3>
+          <a href="http://www.seattletimes.com/sports/seahawks/jon-gruden-was-among-few-who-lauded-seahawks-pick-of-russell-wilson/" id="el-above-fold-block-9462980-9598808-t">
+           Jon Gruden was among few who lauded Seahawks’ pick of Russell Wilson
+          </a>
+         </h3>
+        </div>
+       </div>
+      </div>
+     </article>
+     <!-- #post-## -->
+     <div class="OUTBRAIN" data-ob-template="seattletimes" data-src="http://www.seattletimes.com/nation-world/forest-service-may-blow-up-frozen-cows-in-cabin/" data-widget-id="AR_5">
+     </div>
+     <script async="async" src="http://widgets.outbrain.com/outbrain.js" type="text/javascript">
+     </script>
+     <div class="footer-ad ad no-border show-tablet show-desktop" id="ad-bottom">
+      <div class="dfp-ad dfp-bottom" id="div-gpt-ad-bottom">
+       <div class="ad-wrapper">
+       </div>
+      </div>
+      <!-- Bottom Ad Position -->
+     </div>
+    </div>
+    <!-- .wrapper -->
+   </section>
+   <!-- #content-well -->
+  </div>
+  <footer class="global-footer">
+   <div class="seattle-horizon">
+    <span>
+    </span>
+   </div>
+   <div class="footer-top">
+    <div class="wrapper">
+     <ul class="footer-nav-primary">
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-post_format menu-item-has-children menu-item-42879" id="menu-item-42879">
+       <a href="http://www.seattletimes.com/type/link/">
+        Contact
+       </a>
+       <ul class="sub-menu">
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42786" id="menu-item-42786">
+         <a href="http://company.seattletimes.com/contact-us/">
+          Company Contact
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-42783" id="menu-item-42783">
+         <a href="http://www.seattletimes.com/help/">
+          Questions?
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9487380" id="menu-item-9487380">
+         <a href="http://www.seattletimes.com/contact/">
+          Contact
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-5522511" id="menu-item-5522511">
+       <a href="http://company.seattletimes.com/who-we-are/">
+        About the company
+       </a>
+       <ul class="sub-menu">
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42813" id="menu-item-42813">
+         <a href="http://seattletimes.com/seattlerestaurantweek/">
+          Seattle Restaurant Week
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42808" id="menu-item-42808">
+         <a href="http://services.nwsource.com/nie/times/index.asp">
+          Newspapers in Education
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42809" id="menu-item-42809">
+         <a href="http://seattletimes.com/html/ffn/">
+          Fund for the Needy
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42799" id="menu-item-42799">
+         <a href="http://company.seattletimes.com/careers/">
+          Employment
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42803" id="menu-item-42803">
+         <a href="http://nl.newsbank.com/nl-search/we/Archives/?p_product=HA-SE&amp;p_theme=histpaper&amp;p_action=keyword">
+          Historical Archives
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9591853" id="menu-item-9591853">
+         <a href="http://www.seattletimes.com/pulitzers/">
+          Pulitzers
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-post_format menu-item-has-children menu-item-42880" id="menu-item-42880">
+       <a href="http://www.seattletimes.com/type/link/">
+        Advertise
+       </a>
+       <ul class="sub-menu">
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42825" id="menu-item-42825">
+         <a href="http://www.nwsource.com/classifieds/postlisting.html">
+          Classifieds
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42832" id="menu-item-42832">
+         <a href="http://autos.seattletimes.com/">
+          Autos
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42834" id="menu-item-42834">
+         <a href="http://homes.seattletimes.com/postlisting.html">
+          Homes
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42830" id="menu-item-42830">
+         <a href="http://services.nwsource.com/ClassifiedWeb/ObituaryNotice.aspx">
+          Obituary
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42831" id="menu-item-42831">
+         <a href="http://jobs.seattletimes.com/employers/postjob/">
+          Jobs
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42817" id="menu-item-42817">
+         <a href="http://mediakit.seattletimes.com/">
+          Media Kit
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42824" id="menu-item-42824">
+         <a href="http://mediakit.seattletimes.com/">
+          Advertise with Us
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-post_format menu-item-has-children menu-item-42874" id="menu-item-42874">
+       <a href="http://www.seattletimes.com/type/link/">
+        Subscriber Services
+       </a>
+       <ul class="sub-menu">
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42839" id="menu-item-42839">
+         <a href="https://subscriberservices.seattletimes.com/dsssubscribe.aspx?pid=266&amp;pc=true&amp;premium=y&amp;product=website&amp;CMPID=6326&amp;icn=site-footersrv&amp;ici=subscribe&amp;return=https://secure.seattletimes.com/accountcenter/postsubscribelanding">
+          Subscribe
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42843" id="menu-item-42843">
+         <a href="http://subscriberservices.seattletimes.com/dssmatch.aspx?premium=y&amp;product=website&amp;pc=true&amp;return=https://secure.seattletimes.com/accountcenter/postsubscribelanding">
+          Activate Account
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42841" id="menu-item-42841">
+         <a href="https://subscriberservices.seattletimes.com/">
+          Manage Subscription
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42842" id="menu-item-42842">
+         <a href="https://subscriberservices.seattletimes.com/SecurePage/VacationStop.aspx">
+          Place Temporary Hold
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5522514" id="menu-item-5522514">
+         <a href="https://subscriberservices.seattletimes.com/SecurePage/MissedPaper.aspx">
+          Report Delivery Issue
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42846" id="menu-item-42846">
+         <a href="https://subscriberservices.seattletimes.com/securepage/payment.aspx">
+          Make a Payment
+         </a>
+        </li>
+        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42847" id="menu-item-42847">
+         <a href="https://subscriberservices.seattletimes.com/access.aspx?premium=y&amp;product=eedition">
+          Print Replica
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-42857" id="menu-item-42857">
+       <a href="http://seattletimes.com/PDF/frontpage.pdf">
+        Today’s Front Page
+       </a>
+      </li>
+      <li class="facebook separated menu-item menu-item-type-custom menu-item-object-custom menu-item-42875" id="menu-item-42875">
+       <a href="https://www.facebook.com/seattletimes">
+        Facebook
+       </a>
+      </li>
+      <li class="twitter menu-item menu-item-type-custom menu-item-object-custom menu-item-42876" id="menu-item-42876">
+       <a href="http://twitter.com/seattletimes">
+        Twitter
+       </a>
+      </li>
+     </ul>
+     <ul class="footer-nav-secondary" id="menu-footer-secondary">
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5522515" id="menu-item-5522515">
+       <a href="http://seattletimes.com/flatpages/services/newsletters.html">
+        Newsletters
+       </a>
+      </li>
+      <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5522517" id="menu-item-5522517">
+       <a href="http://www.seattletimes.com/mobile-apps/">
+        Mobile Apps
+       </a>
+      </li>
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9471222" id="menu-item-9471222">
+       <a href="https://subscriberservices.seattletimes.com/dsssubscribe.aspx?pid=266&amp;pc=true&amp;premium=y&amp;product=website&amp;CMPID=6326&amp;icn=site-footer&amp;ici=subscribe&amp;return=https://secure.seattletimes.com/accountcenter/postsubscribelanding">
+        Subscribe
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+   <div class="footer-btm">
+    <div class="wrapper">
+     <section class="footer-copyright">
+      Copyright © 2015 The Seattle Times Company |
+      <a href="http://company.seattletimes.com/notices/notice2.html">
+       Privacy statement
+      </a>
+      |
+      <a href="http://company.seattletimes.com/notices/notice1.html">
+       Terms of service
+      </a>
+      <br>
+      </br>
+     </section>
+    </div>
+   </div>
+  </footer>
+ </body>
+</html>
+<div class="modals">
+ <div class="global-modal">
+  <div class="modal-content">
+  </div>
+  <span class="modal-toggle">
+   <i>
+   </i>
+  </span>
+ </div>
+ <div id="message-container">
+ </div>
+ <div id="ad-inter">
+  <div class="dfp-ad dfp-inter" id="div-gpt-ad-inter">
+   <div class="ad-wrapper">
+   </div>
+  </div>
+ </div>
+ <div id="ad-wallpaper">
+  <div class="dfp-ad dfp-wallpaper" id="div-gpt-ad-wallpaper">
+   <div class="ad-wrapper">
+   </div>
+  </div>
+ </div>
+</div>
+<div class="footer-scripts">
+ <script type="text/javascript">
+  /* <![CDATA[ */
+var globalStub = [];
+var SEATIMESCO = SEATIMESCO || {};
+ SEATIMESCO.payMeter = SEATIMESCO.paymeter || {"currentDomain":"www.seattletimes.com","_mcid":"www.seattletimes.com\/5750523","_mcidType":"article","_mcidExclude":"","categories":"environment|nation-world","paymeter_config_url":"http:\/\/www.seattletimes.com\/paymeterconfig\/stdotcom\/"};
+
+  window.SEATIMESCO.singleSignOn = window.SEATIMESCO.singleSignOn || {};
+  window.SEATIMESCO.singleSignOn.info = window.SEATIMESCO.singleSignOn.info || {};
+  window.SEATIMESCO.singleSignOn.info.stEnvironment           = "";
+  window.SEATIMESCO.singleSignOn.info.commentsURL             = "discussions.seattletimes.com";
+  window.SEATIMESCO.singleSignOn.info.subscriberSessionURL    = "secure.seattletimes.com/accountcenter/getsubscribersession.js?method=ajax&session=";
+  window.SEATIMESCO.singleSignOn.info.commenterSessionURL     = "discussions.seattletimes.com/comments/lftoken.js?method=ajax&token=";
+  window.SEATIMESCO.singleSignOn.info.analyticsURL            = "secure.seattletimes.com/accountcenter/soa.js?method=ajax&session=";
+  window.SEATIMESCO.singleSignOn.info.profileURL              = "secure.seattletimes.com/accountcenter/profile.js?method=ajax&displayname=";
+  
+    window.SEATIMESCO.comments                     = window.SEATIMESCO.comments || {};
+
+    window.SEATIMESCO.comments.info                = window.SEATIMESCO.comments.info || {};
+
+    window.SEATIMESCO.comments.info.checksum       = '451d3cace49edd045bf3f70a7805af00';
+
+    window.SEATIMESCO.comments.info.collectionMeta = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aXRsZSI6IkZvcmVzdCBTZXJ2aWNlIG1heSBibG93IHVwIGZyb3plbiBjb3dzIGluIGNhYmluIiwidXJsIjoiaHR0cDpcL1wvd3d3LnNlYXR0bGV0aW1lcy5jb21cL25hdGlvbi13b3JsZFwvZm9yZXN0LXNlcnZpY2UtbWF5LWJsb3ctdXAtZnJvemVuLWNvd3MtaW4tY2FiaW5cLyIsInRhZ3MiOiIiLCJjaGVja3N1bSI6IjQ1MWQzY2FjZTQ5ZWRkMDQ1YmYzZjcwYTc4MDVhZjAwIiwiYXJ0aWNsZUlkIjoiMjAxNzk5OTUzOCJ9.z8j2Q4SnzgoNA0g3dU1esxXnjB-09XzAv-jtTDXNbD4';
+
+    window.SEATIMESCO.comments.info.containerID    = 'comments';
+
+    window.SEATIMESCO.comments.info.disableAvatars = true;
+
+    window.SEATIMESCO.comments.info.enabled        = true;
+
+    window.SEATIMESCO.comments.info.lfEnvironment  = '';
+
+    window.SEATIMESCO.comments.info.network        = 'seattletimes.fyre.co';
+
+    window.SEATIMESCO.comments.info.postID         = '2017999538';
+
+    window.SEATIMESCO.comments.info.postIDBase64   = 'MjAxNzk5OTUzOA==';
+
+    window.SEATIMESCO.comments.info.postTitle      = 'Forest Service may blow up frozen cows in cabin';
+
+    window.SEATIMESCO.comments.info.siteID         = '316317';
+
+    window.SEATIMESCO.comments.info.stEnvironment  = '';
+
+    ;
+/* ]]> */
+ </script>
+ <script src="http://www.seattletimes.com/wp-content/themes/st_refresh/js/bundle.min.js?ver=1429210997" type="text/javascript">
+ </script>
+ <script src="http://www.seattletimes.com/wp-content/themes/st_refresh/js/vendor/chartbeat.js?ver=1424740636" type="text/javascript">
+ </script>
+ <script src="http://www.seattletimes.com/wp-content/plugins/widget-marketplace-promos/tabs.js?ver=4.0" type="text/javascript">
+ </script>
+ <script src="http://zor.livefyre.com/wjs/v3.0/javascripts/livefyre.js" type="text/javascript">
+ </script>
+ <!--[if lt IE 10]>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+
+  if ( helpers.getCookie( 'st_browser_upgrade_message_seen' ) == false && helpers.getCookie('st_browser_upgrade_message_seen') != 'true' ) {
+    var browserUpdateDiv = document.createElement('div');
+    browserUpdateDiv.className = "no-support-message";
+    browserUpdateDiv.innerHTML = "Your browser appears to be outdated and can't take advantage of many features on the site. Please <a href=\"http://outdatedbrowser.com/en\">consider upgrading your browser</a> to receive our intended user experience."
+    document.body.insertBefore(browserUpdateDiv, document.body.childNodes[0]);
+
+    helpers.writeCookie('st_browser_upgrade_message_seen', 'true', (30 * 24 * 60 * 60 * 1000), '/', '.seattletimes.com' );
+  }
+});
+</script>
+<![endif]-->
+</div>
+<script type="text/javascript">
+ window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"c4b9c42d06","applicationID":"12623975","transactionName":"Z1xRZ0tSXhZYWxFdX14WclBNWl8LFksMWldcXA==","queueTime":0,"applicationTime":591,"atts":"SxtSEQNITRg=","errorBeacon":"bam.nr-data.net","agent":"js-agent.newrelic.com\/nr-632.min.js"}
+</script>
