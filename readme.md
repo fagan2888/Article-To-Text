@@ -12,12 +12,12 @@ For example:
 
 Optional flags:
 
-	-f, --file 		Save output to .txt file in the current working directory.
-	-h, --help 		Show this help message and exit.
-	-r, --rebuild 	Rebuild the Bayes data structure based on the webpages
-  					in the training directory and training.tsv file.
-	-t, --train 	Run supervised trainer on submitted url. Save results to
-  					training directory and Bayes data structure.
+	-f, --file 	Save output to .txt file in the current working directory.
+	-h, --help 	Show this help message and exit.
+	-r, --rebuild Rebuild the Bayes data structure based on the webpages
+  				in the training directory and training.tsv file.
+	-t, --train Run supervised trainer on submitted url. Save results to
+  				training directory and Bayes data structure.
 
 ## Requirements:
 
